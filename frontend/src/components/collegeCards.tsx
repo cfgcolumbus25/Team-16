@@ -6,6 +6,7 @@ export type collegeDisplay = {
   cost?: number;
   acceptanceRate?: number;
   clepAccept: number;
+  amountOfStudentClepScores: number;
 };
 
 const CollegeCards = ({
@@ -15,23 +16,37 @@ const CollegeCards = ({
   cost,
   acceptanceRate,
   clepAccept,
+  amountOfStudentClepScores,
 }: collegeDisplay) => {
   return (
     <div
-      className="border rounded-2xl p-4 border-gray-500 bg-white hover:shadow-md transition-shadow"
+      className="relative p-4 rounded-2xl border-gray-500 border-2 bg-white hover:shadow-md transition-shadow"
       style={{ cursor: "pointer" }}
     >
-      <div className="flex justify-between">
-        <div className="text-xl">{collegeName}</div>
-        <div className={`px-2 py-1 rounded-full bg-amber-200 border-amber-900 border-2`}>
-          <div className={`font-semibold`}>{clepAccept}</div>
+      {/* Badge in the corner */}
+      <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-amber-200 border-2 border-amber-900">
+        <div className="text-amber-900 font-semibold text-xs">
+          {clepAccept} / {amountOfStudentClepScores}
         </div>
       </div>
 
-      <div className="flex flex-row space-x-12">
-        <p>{location}</p>
-        <p>${cost}</p>
-        <p>{acceptanceRate}%</p>
+      {/* College Info */}
+      <div className="flex items-start space-x-3">
+        <div className="min-w-0">
+          <div className="font-semibold text-black mb-1 text-xl">
+            {collegeName}
+          </div>
+
+          <div className="text-md text-gray-600 mb-2">{location}</div>
+
+          <div className="flex flex-row gap-x-4 text-md">
+            <div>Cost:</div>
+            <div className="font-medium">${cost}</div>
+
+            <div>Acceptance Rate:</div>
+            <div className="font-medium">{acceptanceRate}%</div>
+          </div>
+        </div>
       </div>
     </div>
   );
