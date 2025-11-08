@@ -22,7 +22,7 @@ function App() {
         <p className="text-blue-50">Hello</p>
         <Routes></Routes>
       </Router>
-      <CollegeContainer />
+      <CollegeContainer />                                                                                                                                                              
     </>
   );
 }
