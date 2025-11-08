@@ -23,7 +23,7 @@ def get_courses_for_institution(uni_id):
     try:
         # Get all courses linked to this institution
         data = (
-            supabase.table("UniversityClep")
+            supabase.table("clep_policies")
             .select("course_names, course_cutoff_score, course_credits, clep_id")
             .eq("uni_id", uni_id)
             .execute()
