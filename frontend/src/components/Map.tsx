@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import L from 'leaflet';
@@ -14,34 +13,88 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
 });
 
-const position: LatLngExpression = [39.9612, -82.9988]; // Columbus, OH
+interface College {
+  id: number;
+  collegeName: string;
+  location: string;
+  cost: number;
+  acceptanceRate: number;
+  clepAccept: number;
+  amountOfStudentClepScores: number;
+}
+
+// Map location names to coordinates
+const locationCoordinates: { [key: string]: LatLngExpression } = {
+  'Ithaca': [42.4440, -76.5019],
+  'Ohio': [40.4173, -82.9071], // Columbus, OH
+  'Maryland': [38.9897, -76.9378], // College Park, MD
+};
 
 const Map = () => {
-	useEffect(() => {
-		console.log('Map component mounted');
-	}, []);
+  // Hardcoded colleges data - matches CollegeContainer
+  const colleges: College[] = [
+    {
+      id: 1,
+      collegeName: "Cornell University",
+      location: "Ithaca",
+      cost: 100000,
+      acceptanceRate: 10,
+      clepAccept: 10,
+      amountOfStudentClepScores: 20,
+    },
+    {
+      id: 2,
+      collegeName: "Ohio State University",
+      location: "Ohio",
+      cost: 50000,
+      acceptanceRate: 5,
+      clepAccept: 5,
+      amountOfStudentClepScores: 20,
+    },
+    {
+      id: 3,
+      collegeName: "University of Maryland",
+      location: "Maryland",
+      cost: 50000,
+      acceptanceRate: 10,
+      clepAccept: 5,
+      amountOfStudentClepScores: 20,
+    },
+  ];
 
-	return (
-		<div style={{ height: '100vh', width: '100%', backgroundColor: 'lightblue' }}>
-			<h1 style={{ margin: 0, padding: '10px', backgroundColor: 'white' }}>Map Test</h1>
-			<MapContainer 
-				center={position} 
-				zoom={13} 
-				style={{ height: 'calc(100vh - 50px)', width: '100%' }}
-				scrollWheelZoom={true}
-			>
-				<TileLayer
-					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-					attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
-				/>
-				<Marker position={position}>
-					<Popup>
-						Columbus, Ohio<br />Map is working!
-					</Popup>
-				</Marker>
-			</MapContainer>
-		</div>
-	);
+  const centerPosition: LatLngExpression = [40.0, -80.0]; // Center of the three locations
+
+  return (
+    <div style={{ height: '100vh', width: '100%' }}>
+      <MapContainer 
+        center={centerPosition} 
+        zoom={6} 
+        style={{ height: '100%', width: '100%' }}
+        scrollWheelZoom={true}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+        />
+        {colleges.map((college) => {
+          const position = locationCoordinates[college.location];
+          if (!position) return null;
+          
+          return (
+            <Marker key={college.id} position={position}>
+              <Popup>
+                <strong>{college.collegeName}</strong><br />
+                Location: {college.location}<br />
+                Cost: ${college.cost.toLocaleString()}<br />
+                Acceptance Rate: {college.acceptanceRate}%<br />
+                CLEP Accept: {college.clepAccept}
+              </Popup>
+            </Marker>
+          );
+        })}
+      </MapContainer>
+    </div>
+  );
 };
 
 export default Map;
