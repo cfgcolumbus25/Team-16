@@ -1,0 +1,43 @@
+NEW FILES ADDED AND IMPLEMENTATION REASONING
+============================================
+
+1. frontend/src/components/login.tsx
+   - Complete login/register component with tabs
+   - Supports three user types (Learners, University, Admin)
+   - Has embedded mode for University dashboard flow
+   - Why: Centralized authentication component that can be reused. Embedded mode allows login to appear after institution selection in University flow, creating better UX.
+
+2. frontend/src/components/UniversityDashboard.tsx
+   - Institution selection dropdown
+   - Request new institution form
+   - Conditional login and CLEP manager display
+   - Why: Universities need to identify themselves first before accessing their dashboard. This prevents unauthorized access and creates logical flow: select institution → login → manage scores.
+
+3. frontend/src/components/AdminDashboard.tsx
+   - Statistics overview cards
+   - Pending institution requests table
+   - Review and approve/deny functionality
+   - Why: Admins need centralized management of all institution requests. Statistics provide quick overview, and review dialog ensures careful approval process to prevent spam.
+
+4. frontend/src/components/CLEPScoringManager.tsx
+   - Add/edit/delete CLEP exams
+   - Inline editing of scores and credits
+   - Support for multiple credit tiers per exam
+   - Why: Universities need flexible system to match real policies (e.g., Physics 65=3 credits, Physics 70=4 credits). Inline editing is faster than separate forms, and table format makes it easy to compare multiple exams.
+
+MODIFIED FILES
+==============
+
+1. frontend/src/App.tsx
+   - Added routes for /login, /university-dashboard, /admin-dashboard
+   - Why: Needed routing structure to support different user dashboards and login flow.
+
+2. frontend/src/components/navbar.tsx
+   - Added Login button with dropdown (Learners, University, Admin)
+   - University routes directly to dashboard (skips login page)
+   - Why: Single entry point for all user types. University goes directly to dashboard because they select institution first, then login - better flow than login page first.
+
+3. frontend/src/components/collegeCards.tsx
+   - Minor updates to pass collegeId
+   - Why: Needed for voting system to uniquely identify exam entries.
+

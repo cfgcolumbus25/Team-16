@@ -31,9 +31,15 @@ import {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const { mode, toggleTheme } = useThemeMode();
+
   
-    // Type the helper function
-    const getPath = (link: string): string => `/${link.toLowerCase()}`;
+    const getPath = (link: string): string => {
+        if (link.toLowerCase() === 'clep search') {
+        return '/';
+        }
+        return `/${link.toLowerCase()}`;
+    };
+
 
     const handleLoginClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
@@ -45,7 +51,13 @@ import {
 
     const handleUserTypeSelect = (userType: 'Learners' | 'University' | 'Admin') => {
       handleMenuClose();
-      navigate(`/login?type=${userType}`);
+      if (userType === 'University') {
+        // University goes directly to dashboard (institution selection first)
+        navigate('/university-dashboard');
+      } else {
+        // Learners and Admin go to login page
+        navigate(`/login?type=${userType}`);
+      }
     };
   
     return (
