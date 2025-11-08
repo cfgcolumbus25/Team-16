@@ -63,7 +63,7 @@ def get_clep_policies_filtered():
     paylord = request.json or {}
     state = paylord["userLocation"].split(", ")[1]
     instate = paylord["inState"]
-
+    clepExamsTaken = paylord["clepExams"]
     data = []
     if instate:
         try:
@@ -75,6 +75,11 @@ def get_clep_policies_filtered():
             data = supabase.table("institutes").select("*").execute()
         except Exception as e:
             return jsonify({"error": str(e)}), 500
+    policies = []
+    for institution in data:
+        for key, value in clepExamsTaken: 
+          policies.append(supabase.table("clep_policies").select("*").eq("un_id", institution["id"]).eq("uni_clep_id", institution["id"]).execute())
+
 
     
 
