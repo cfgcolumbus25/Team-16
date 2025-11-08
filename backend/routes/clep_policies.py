@@ -27,7 +27,7 @@ def get_clep_policies():
               'error': str(e)
           }), 500
         
-@clep_policies_bp.route("/", methods=["POST"])
+@clep_policies_bp.route("/clep_policies", methods=["POST"])
 def post_clep_policies():
     payload = request.json or {}
 
@@ -47,7 +47,7 @@ def post_clep_policies():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@clep_policies_bp.route("/<uuid>", methods=["PUT"])
+@clep_policies_bp.route("/clep_policies/<uuid>", methods=["PUT"])
 def put_clep_policies(uuid):
     payload = request.json or {}
 
