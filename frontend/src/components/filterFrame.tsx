@@ -23,6 +23,11 @@ export default function FilterForm() {
   const [currentExam, setCurrentExam] = useState("");
   const [currentScore, setCurrentScore] = useState<number | string>(50);
 
+  // --- New States for API Submission ---
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [submitSuccess, setSubmitSuccess] = useState(false); // <-- Added success state
+
   // const [collegeQuery, setCollegeQuery] = useState("");
   // const [debouncedCollegeQuery] = useDebounce(collegeQuery, 300);
   // const [universitySuggestions, setUniversitySuggestions] = useState<University[]>([]);
@@ -64,22 +69,65 @@ export default function FilterForm() {
 
     setClepScores([...clepScores, { examName: currentExam, score: scoreAsNumber }]);
     setCurrentExam("");
-    setCurrentScore(50);
+    setCurrentScore(0);
   };
 
   const removeExam = (indexToRemove: number) => {
     setClepScores(clepScores.filter((_, index) => index !== indexToRemove));
   };
 
-  const submitForm = () => {
+  const submitForm = async () => {
+  
+    // 1. Transform the CLEP scores array to the new format
+    const formattedClepExams = clepScores.map(exam => ({
+      subject: exam.examName, // 'examName' becomes 'subject'
+      score: exam.score
+    }));
+
+    // 2. Create the payload with the new keys
     const payload = {
-      studentLocation,
-      // collegePreference,
-      inOrOutOfState,
-      clepExamScores: clepScores,
+      userLocation: studentLocation, 
+      inState: inOrOutOfState,        
+      clepExams: formattedClepExams, 
     };
 
-    console.log("Submitting →", payload);
+
+    console.log("Submitting →", payload); 
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+    setSubmitSuccess(false);
+
+    try {
+      // replace this URL with actual API endpoint
+      const response = await fetch('https://api.the-endpoint.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload), // Send the newly formatted payload
+      });
+
+      if (!response.ok) {
+        // Handle server errors (e.g., 404, 500)
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log('Success:', result);
+      setSubmitSuccess(true); // Set success state
+      setStudentLocation("");
+      setInOrOutOfState(null);
+      setClepScores([]);
+
+    } catch (error: any) {
+      // Handle network errors or the error thrown above
+      console.error('Submission failed:', error);
+      setSubmitError(error.message || "An unknown error occurred.");
+
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -120,6 +168,7 @@ export default function FilterForm() {
         <select
           className="border rounded-md p-2 w-full"
           onChange={(e) => setInOrOutOfState(e.target.value === "in")}
+          value={inOrOutOfState === null ? "" : (inOrOutOfState ? "in" : "out")} // Control the component
         >
           <option value="">Select...</option>
           <option value="in">In-State</option>
@@ -193,12 +242,26 @@ export default function FilterForm() {
         </div>
       </div>
 
+      {/* --- Updated Button & Feedback Messages --- */}
       <button
         onClick={submitForm}
-        className="w-full bg-amber-200 border-amber-900 text-black py-2 rounded-md font-semibold"
+        disabled={isSubmitting}
+        className="w-full bg-amber-200 border-amber-900 text-black py-2 rounded-md font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        Submit
+        {isSubmitting ? "Submitting..." : "Submit"}
       </button>
+
+      {/* Success Message */}
+      {submitSuccess && (
+        <p className="text-sm text-green-600 mt-2">
+          Preferences submitted successfully!
+        </p>
+      )}
+
+      {/* Error Message */}
+      {submitError && (
+        <p className="text-sm text-red-600 mt-2">{submitError}</p>
+      )}
     </div>
   );
 }
