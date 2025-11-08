@@ -61,13 +61,21 @@ const locationColors: { [key: string]: string } = {
 interface RoutingMachineProps {
   start: LatLngExpression;
   end: LatLngExpression;
+  transportMode: 'driving' | 'walking' | 'cycling';
 }
 
-const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
+const RoutingMachine = ({ start, end, transportMode }: RoutingMachineProps) => {
   const map = useMap();
 
   useEffect(() => {
     if (!map) return;
+
+    // Different colors for different transport modes
+    const modeColors = {
+      driving: '#6366f1',
+      walking: '#10b981',
+      cycling: '#f59e0b'
+    };
 
     const routingControl = L.Routing.control({
       waypoints: [
@@ -77,8 +85,11 @@ const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
       routeWhileDragging: true,
       showAlternatives: false,
       addWaypoints: false,
+      router: L.Routing.osrmv1({
+        profile: transportMode === 'driving' ? 'car' : transportMode === 'cycling' ? 'bike' : 'foot',
+      }),
       lineOptions: {
-        styles: [{ color: '#6366f1', weight: 4, opacity: 0.7 }],
+        styles: [{ color: modeColors[transportMode], weight: 4, opacity: 0.7 }],
         extendToWaypoints: true,
         missingRouteTolerance: 0
       },
@@ -89,7 +100,7 @@ const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
     return () => {
       map.removeControl(routingControl);
     };
-  }, [map, start, end]);
+  }, [map, start, end, transportMode]);
 
   return null;
 };
@@ -141,6 +152,7 @@ const Map = () => {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [focusedState, setFocusedState] = useState<string>('All');
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [transportMode, setTransportMode] = useState<'driving' | 'walking' | 'cycling'>('driving');
   
   // Get user's current location
   const getCurrentLocation = () => {
@@ -337,6 +349,30 @@ const Map = () => {
             <option value="Florida">Florida</option>
           </select>
         </div>
+
+        {/* Transport Mode Filter */}
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
+          <label style={{ fontSize: '13px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+            Transport Mode:
+          </label>
+          <select 
+            value={transportMode}
+            onChange={(e) => setTransportMode(e.target.value as 'driving' | 'walking' | 'cycling')}
+            style={{
+              width: '100%',
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #d1d5db',
+              fontSize: '13px',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="driving">🚗 Driving</option>
+            <option value="walking">🚶 Walking</option>
+            <option value="cycling">🚴 Cycling</option>
+          </select>
+        </div>
+
         {/* Current Location Toggle */}
         <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
@@ -450,7 +486,8 @@ const Map = () => {
         {routePoints && (
           <RoutingMachine 
             start={routePoints.start} 
-            end={routePoints.end} 
+            end={routePoints.end}
+            transportMode={transportMode}
           />
         )}
       </MapContainer>
