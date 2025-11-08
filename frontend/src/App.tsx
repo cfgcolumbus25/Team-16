@@ -11,6 +11,8 @@ import "./App.css";
 import CollegeContainer from "./containers/CollegeContainer";
 import Map from './components/Map.tsx';
 import Login from './components/login';
+import UniversityDashboard from './components/UniversityDashboard';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
   const links = ["CLEP Search", "Recent Events"];
@@ -21,6 +23,8 @@ function App() {
         <NavBar links={links} />
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/university-dashboard" element={<UniversityDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/" element={
             <div style={{ 
               display: 'grid', 
@@ -35,6 +39,7 @@ function App() {
         </Routes>
         <Footer />
       </Router>
+      <CollegeContainer />                                                                                                                                                              
     </>
   );
 }

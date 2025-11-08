@@ -417,7 +417,10 @@ const Map = () => {
           );
         })}
         {routePoints && (
-          <RoutingMachine start={routePoints.start} end={routePoints.end} />
+          <RoutingMachine 
+            start={routePoints.start} 
+            end={routePoints.end} 
+          />
         )}
       </MapContainer>
     </div>
