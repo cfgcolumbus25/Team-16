@@ -3,8 +3,6 @@ import CollegeCards from "../components/collegeCards";
 
 const CollegeContainer = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [open, setOpen] = useState(false);
-  const dropDownOptions = ["None", "Location", "Accepted Scores"];
 
   const colleges = [
     {
@@ -13,8 +11,9 @@ const CollegeContainer = () => {
       location: "Ithaca",
       cost: 100000,
       acceptanceRate: 10,
-      clepAccept: 10,
+      clepAccept: 1,
       amountOfStudentClepScores: 20,
+      clepExams: [],
     },
     {
       id: 2,
@@ -24,6 +23,7 @@ const CollegeContainer = () => {
       acceptanceRate: 5,
       clepAccept: 5,
       amountOfStudentClepScores: 20,
+      clepExams: [],
     },
     {
       id: 3,
@@ -33,6 +33,37 @@ const CollegeContainer = () => {
       acceptanceRate: 10,
       clepAccept: 5,
       amountOfStudentClepScores: 20,
+      clepExams: [],
+    },
+    {
+      id: 4,
+      collegeName: "University of Maryland",
+      location: "Maryland",
+      cost: 50000,
+      acceptanceRate: 10,
+      clepAccept: 5,
+      amountOfStudentClepScores: 20,
+      clepExams: [],
+    },
+    {
+      id: 5,
+      collegeName: "University of Maryland",
+      location: "Maryland",
+      cost: 50000,
+      acceptanceRate: 10,
+      clepAccept: 5,
+      amountOfStudentClepScores: 20,
+      clepExams: [],
+    },
+    {
+      id: 6,
+      collegeName: "University of Maryland",
+      location: "Maryland",
+      cost: 50000,
+      acceptanceRate: 10,
+      clepAccept: 5,
+      amountOfStudentClepScores: 20,
+      clepExams: [],
     },
   ];
   colleges.sort((a, b) => b.clepAccept - a.clepAccept);
@@ -44,7 +75,7 @@ const CollegeContainer = () => {
   });
 
   return (
-    <div className="w-[50%] p-5 bg-gray-200 space-y-2">
+    <div className="p-5 space-y-2">
       <input
         type="text"
         placeholder="Search College Name..."
@@ -52,7 +83,7 @@ const CollegeContainer = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="flex-1 px-3 py-2 border border-gray-300 text-sm bg-white rounded-3xl w-full"
       />
-      <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-2">
+      <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-2 h-[650px]">
         {filteredColleges.map((college) => (
           <CollegeCards key={college.id} {...college} />
         ))}

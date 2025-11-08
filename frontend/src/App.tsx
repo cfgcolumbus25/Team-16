@@ -1,18 +1,15 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 import NavBar from "./components/navbar";
 import {
   HashRouter as Router,
   Routes,
-  Route,
-  Navigate,
 } from "react-router-dom";
 import "./App.css";
-import CollegeContainer from "./containers/collegeContainer";
+import CollegeContainer from "./containers/CollegeContainer";
+import { SimpleGrid } from "@chakra-ui/react";
+import Map from './components/Map.tsx';
 
 function App() {
-  const [count, setCount] = useState(0);
   const links = ["CLEP Search", "Recent Events"];
 
   return (
@@ -22,7 +19,10 @@ function App() {
         <p className="text-blue-50">Hello</p>
         <Routes></Routes>
       </Router>
-      <CollegeContainer />
+      <SimpleGrid columns={2} gap={4} padding={4}>
+        <CollegeContainer />
+        <Map />
+      </SimpleGrid>
     </>
   );
 }
