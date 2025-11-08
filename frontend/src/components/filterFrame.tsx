@@ -83,7 +83,7 @@ export default function FilterForm() {
   };
 
   return (
-    <div className="max-w-lg mx-auto p-6 border rounded-xl bg-white shadow-sm space-y-6">
+    <div className="p-6 border rounded-xl bg-white shadow-sm space-y-6">
       <h2 className="text-xl font-bold">Preferences</h2>
 
       <StudentLocationInput setStudentLocation={setStudentLocation} />

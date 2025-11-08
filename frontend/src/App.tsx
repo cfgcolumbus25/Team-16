@@ -31,7 +31,7 @@ function App() {
           <Route path="/" element={
             <div style={{ 
               display: 'grid', 
-              gridTemplateColumns: '1fr 1fr', 
+              gridTemplateColumns: '1fr 2fr 2fr', 
               gap: '16px', 
               padding: '16px' 
             }}>
