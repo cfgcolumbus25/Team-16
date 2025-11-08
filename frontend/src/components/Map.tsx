@@ -80,13 +80,13 @@ const Map = () => {
     },
   ];
 
-  const centerPosition: LatLngExpression = [40.0, -80.0]; // Center of the three locations
+  const centerPosition: LatLngExpression = [40.5, -78.0]; // Center of the three locations
 
   return (
     <div style={{ height: '100vh', width: '100%' }}>
       <MapContainer 
         center={centerPosition} 
-        zoom={6} 
+        zoom={5} 
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
       >
