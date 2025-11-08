@@ -207,11 +207,13 @@ const UniversityDashboard: React.FC = () => {
                 key={inst.id} 
                 value={inst.id}
                 sx={{
-                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'inherit',
-                  color: isDark ? '#e8f0f8' : 'inherit',
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'white',
+                  color: isDark ? '#e8f0f8' : '#000000',
                   '&:hover': {
-                    backgroundColor: isDark ? 'rgba(168, 208, 240, 0.2)' : 'inherit',
+                    backgroundColor: isDark ? 'rgba(168, 208, 240, 0.4)' : 'rgba(255, 203, 5, 0.2)',
+                    color: isDark ? '#ffffff' : '#000000',
                   },
+                  transition: 'background-color 0.2s ease, color 0.2s ease',
                 }}
               >
                 {inst.name}
@@ -220,11 +222,13 @@ const UniversityDashboard: React.FC = () => {
             <MenuItem 
               value="request-new"
               sx={{
-                backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'inherit',
-                color: isDark ? '#a8d0f0' : 'inherit',
+                backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'white',
+                color: isDark ? '#a8d0f0' : '#666666',
                 '&:hover': {
-                  backgroundColor: isDark ? 'rgba(168, 208, 240, 0.2)' : 'inherit',
+                  backgroundColor: isDark ? 'rgba(168, 208, 240, 0.4)' : 'rgba(255, 203, 5, 0.2)',
+                  color: isDark ? '#ffffff' : '#000000',
                 },
+                transition: 'background-color 0.2s ease, color 0.2s ease',
               }}
             >
               <em>My institution is not listed - Fill out this form</em>
