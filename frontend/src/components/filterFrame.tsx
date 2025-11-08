@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import StudentLocationInput from "./StudentLocationInput";
 import { useDebounce } from "use-debounce";
+import { useThemeMode } from "../contexts/ThemeContext";
 
 type ClepScore = {
   examName: string;
@@ -15,6 +16,7 @@ type University = {
 };
 
 export default function FilterForm() {
+  const { mode } = useThemeMode();
   const [studentLocation, setStudentLocation] = useState("");
   const [collegePreference, setCollegePreference] = useState("");
   const [inOrOutOfState, setInOrOutOfState] = useState<boolean | null>(null);
@@ -86,14 +88,21 @@ export default function FilterForm() {
     console.log("Submitting →", payload);
   };
 
+  const isDark = mode === 'dark';
+  
   return (
-    <div className="max-w-lg mx-auto p-6 border rounded-xl bg-white shadow-sm space-y-6">
-      <h2 className="text-xl font-bold">Preferences</h2>
+    <div className={`max-w-lg mx-auto p-6 border rounded-xl shadow-sm space-y-6 ${
+      isDark 
+        ? 'bg-gradient-to-br from-slate-800 to-slate-900 border-blue-700 text-blue-50' 
+        : 'bg-white border-gray-300'
+    }`}>
+      <h2 className={`text-xl font-bold ${isDark ? 'text-blue-50' : ''}`}>Preferences</h2>
 
       <StudentLocationInput setStudentLocation={setStudentLocation} />
 
       {/* College Preference Combobox */}
       <div>
+<<<<<<< Updated upstream
         <label className="font-medium text-sm">College Preference</label>
 
         <Combobox
@@ -118,14 +127,49 @@ export default function FilterForm() {
               ))}
             </Combobox.Options>
           </div>
+=======
+        <label className={`font-medium text-sm ${isDark ? 'text-blue-200' : ''}`}>College Preference</label>
+        <Combobox value={collegePreference} onChange={(val) => setCollegePreference(val ?? "")}>
+          <Combobox.Input
+            className={`w-full border p-2 rounded-md ${
+              isDark 
+                ? 'bg-slate-700 border-blue-600 text-blue-50' 
+                : 'bg-white border-gray-300'
+            }`}
+            onChange={(e) => setCollegePreference(e.target.value)}
+          />
+          <Combobox.Options className={`border rounded-md ${
+            isDark 
+              ? 'bg-slate-800 border-blue-600' 
+              : 'bg-white border-gray-300'
+          }`}>
+            {universities.map((uni) => (
+              <Combobox.Option 
+                key={uni} 
+                value={uni} 
+                className={`p-2 cursor-pointer ${
+                  isDark 
+                    ? 'hover:bg-slate-700 text-blue-50' 
+                    : 'hover:bg-gray-100'
+                }`}
+              >
+                {uni}
+              </Combobox.Option>
+            ))}
+          </Combobox.Options>
+>>>>>>> Stashed changes
         </Combobox>
       </div>
 
       {/* In or Out of State */}
       <div>
-        <label className="font-medium text-sm block">State Preference</label>
+        <label className={`font-medium text-sm block ${isDark ? 'text-blue-200' : ''}`}>State Preference</label>
         <select
-          className="border rounded-md p-2 w-full"
+          className={`border rounded-md p-2 w-full ${
+            isDark 
+              ? 'bg-slate-700 border-blue-600 text-blue-50' 
+              : 'bg-white border-gray-300'
+          }`}
           onChange={(e) => setInOrOutOfState(e.target.value === "in")}
         >
           <option value="">Select...</option>
@@ -136,8 +180,9 @@ export default function FilterForm() {
 
       {/* CLEP Exam Scores */}
       <div>
-        <label className="font-medium text-sm">Add CLEP Scores</label>
+        <label className={`font-medium text-sm ${isDark ? 'text-blue-200' : ''}`}>Add CLEP Scores</label>
 
+<<<<<<< Updated upstream
         <div className="flex gap-2 items-end mt-2">
           {/* Test Name Input Group */}
           <div className="flex-1">
@@ -188,11 +233,65 @@ export default function FilterForm() {
               Add +
             </button>
           </div>
+=======
+        <div className="flex gap-2 items-center mt-2">
+          <Combobox value={currentExam} onChange={(val) => setCurrentExam(val ?? "")}>
+            <Combobox.Input
+              className={`border p-2 rounded-md w-full ${
+                isDark 
+                  ? 'bg-slate-700 border-blue-600 text-blue-50' 
+                  : 'bg-white border-gray-300'
+              }`}
+              placeholder="Exam Name"
+              onChange={(e) => setCurrentExam(e.target.value)}
+            />
+            <Combobox.Options className={`border rounded-md ${
+              isDark 
+                ? 'bg-slate-800 border-blue-600' 
+                : 'bg-white border-gray-300'
+            }`}>
+              {examList.map((exam) => (
+                <Combobox.Option 
+                  key={exam} 
+                  value={exam} 
+                  className={`p-2 cursor-pointer ${
+                    isDark 
+                      ? 'hover:bg-slate-700 text-blue-50' 
+                      : 'hover:bg-gray-100'
+                  }`}
+                >
+                  {exam}
+                </Combobox.Option>
+              ))}
+            </Combobox.Options>
+          </Combobox>
+
+          <input
+            type="number"
+            min={20}
+            max={80}
+            value={currentScore}
+            onChange={(e) => setCurrentScore(Number(e.target.value))}
+            className={`w-20 border p-2 rounded-md ${
+              isDark 
+                ? 'bg-slate-700 border-blue-600 text-blue-50' 
+                : 'bg-white border-gray-300'
+            }`}
+          />
+
+          <button
+            onClick={addExam}
+            className="px-3 py-1 bg-blue-600 text-white rounded-md"
+          >
+            Add +
+          </button>
+>>>>>>> Stashed changes
         </div>
 
         {/* List of added scores */}
         <div className="mt-3 space-y-1">
           {clepScores.map((item, idx) => (
+<<<<<<< Updated upstream
             <div key={idx} className="flex justify-between items-center text-sm text-gray-700">
               <span>
                 • {item.examName} — Score: {item.score}
@@ -204,6 +303,12 @@ export default function FilterForm() {
               >
                 &minus;
               </button>
+=======
+            <div key={idx} className={`text-sm ${
+              isDark ? 'text-blue-200' : 'text-gray-700'
+            }`}>
+              • {item.examName} — Score: {item.score}
+>>>>>>> Stashed changes
             </div>
           ))}
         </div>

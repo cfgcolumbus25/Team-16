@@ -7,6 +7,7 @@ import 'leaflet/dist/leaflet.css';
 // @ts-ignore - leaflet-routing-machine doesn't have proper ES module support
 import 'leaflet-routing-machine';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import { useThemeMode } from '../contexts/ThemeContext';
 
 // Fix for default marker icons
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -135,6 +136,8 @@ const stateCenters: { [key: string]: { center: LatLngExpression, zoom: number } 
 };
 
 const Map = () => {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [selectedColleges, setSelectedColleges] = useState<number[]>([]);
   const [currentLocation, setCurrentLocation] = useState<LatLngExpression | null>(null);
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
@@ -306,15 +309,17 @@ const Map = () => {
         top: '10px', 
         left: '10px', 
         zIndex: 1000, 
-        backgroundColor: 'white', 
+        backgroundColor: isDark ? '#1e3a5f' : 'white', 
         padding: '15px', 
         borderRadius: '8px',
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-        maxWidth: '250px'
+        maxWidth: '250px',
+        transition: 'background-color 0.3s ease',
+        color: isDark ? '#e8f0f8' : '#000000'
       }}>
         {/* State Filter */}
-        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
-          <label style={{ fontSize: '13px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: isDark ? '1px solid rgba(168, 208, 240, 0.3)' : '1px solid #e5e7eb' }}>
+          <label style={{ fontSize: '13px', fontWeight: 'bold', display: 'block', marginBottom: '8px', color: isDark ? '#e8f0f8' : '#000000' }}>
             Focus on State:
           </label>
           <select 
@@ -324,9 +329,12 @@ const Map = () => {
               width: '100%',
               padding: '8px',
               borderRadius: '4px',
-              border: '1px solid #d1d5db',
+              border: isDark ? '1px solid #4a6fa5' : '1px solid #d1d5db',
               fontSize: '13px',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              backgroundColor: isDark ? '#0f1f35' : 'white',
+              color: isDark ? '#e8f0f8' : '#000000',
+              transition: 'all 0.3s ease'
             }}
           >
             <option value="All">All States</option>
@@ -338,8 +346,8 @@ const Map = () => {
           </select>
         </div>
         {/* Current Location Toggle */}
-        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
-          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: isDark ? '1px solid rgba(168, 208, 240, 0.3)' : '1px solid #e5e7eb' }}>
+          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px', color: isDark ? '#e8f0f8' : '#000000' }}>
             <input
               type="checkbox"
               checked={useCurrentLocation}
@@ -357,7 +365,7 @@ const Map = () => {
             <strong>📍 Use My Current Location</strong>
           </label>
           {useCurrentLocation && !currentLocation && !locationError && (
-            <p style={{ fontSize: '11px', color: '#6b7280', margin: '5px 0 0 0' }}>Getting location...</p>
+            <p style={{ fontSize: '11px', color: isDark ? '#a8d0f0' : '#6b7280', margin: '5px 0 0 0' }}>Getting location...</p>
           )}
           {locationError && (
             <p style={{ fontSize: '11px', color: '#ef4444', margin: '5px 0 0 0' }}>{locationError}</p>
@@ -368,13 +376,13 @@ const Map = () => {
         </div>
 
         {/* College Selection */}
-        <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: isDark ? '#e8f0f8' : '#000000' }}>
           {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
         </h3>
 
         {filteredColleges.map(college => (
           <div key={college.id} style={{ marginBottom: '5px' }}>
-            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px', color: isDark ? '#e8f0f8' : '#000000' }}>
               <input
                 type="checkbox"
                 checked={selectedColleges.includes(college.id)}

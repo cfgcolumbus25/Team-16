@@ -1,9 +1,16 @@
+import { useThemeMode } from '../contexts/ThemeContext';
+
 const Footer = () => {
+  const { mode } = useThemeMode();
+  
   return (
     <footer style={{
-      backgroundImage: 'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
-      color: 'inherit',
+      backgroundImage: mode === 'dark'
+        ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+        : 'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+      color: mode === 'dark' ? '#e8f0f8' : 'inherit',
       padding: '30px 20px',
+      transition: 'background-image 0.3s ease, color 0.3s ease',
     }}>
       <div style={{ 
         maxWidth: '1200px', 
