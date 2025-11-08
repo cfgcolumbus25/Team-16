@@ -1,4 +1,3 @@
-
 import NavBar from "./components/navbar";
 import Footer from "./components/Footer";
 import {
@@ -14,11 +13,12 @@ import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
 import CollegeContainer from "./containers/CollegeContainer.tsx";
-import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import CursorShadow from './components/CursorShadow';
 import FilterForm from "./components/filterFrame.tsx";
 import { useState } from "react";
 import type { collegeDisplay } from "./components/collegeCards.tsx";
+import Info from './components/Info';
 
 // function HomePage() {
 //   const { mode } = useThemeMode();
@@ -43,7 +43,7 @@ import type { collegeDisplay } from "./components/collegeCards.tsx";
 // }
 
 function App() {
-  const links = ["CLEP Search", "About Us"];
+  const links = ["CLEP Search", "About Us", "Info"];
   const [colleges, setColleges] = useState<collegeDisplay[]>([])
 
   return (
@@ -56,6 +56,7 @@ function App() {
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/about us" element={<AboutUs />} />
+          <Route path="/info" element={<Info />} />
           <Route path="/" element={
             <div style={{ 
               display: 'grid', 
