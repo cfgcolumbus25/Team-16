@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import ShowExamsAccepted from "./ShowExamsAccepted";
 
 export type clepExamsAndScores = {
   examName: string;
@@ -11,11 +13,11 @@ export type clepExamsAndScores = {
 export type collegeDisplay = {
   id: number;
   collegeName: string;
-  lastUpdated?: Date, 
+  lastUpdated?: Date;
   location?: string;
   cost?: number;
   acceptanceRate?: number;
-  creditLimit?: number,
+  creditLimit?: number;
   clepAccept: number;
   amountOfStudentClepScores: number;
   clepExams: clepExamsAndScores[];
@@ -45,10 +47,6 @@ const CollegeCards = ({
           {clepAccept} / {amountOfStudentClepScores} Accepted CLEP Exams
         </div>
       </div>
-      {/* <div className="flex flex-col">
-        <p>Last Updated:</p>
-        {lastUpdated ?? <div>{lastUpdated}</div>}
-      </div> */}
 
       {/* College Info */}
       <div className="flex items-start space-x-3">
@@ -56,10 +54,9 @@ const CollegeCards = ({
           <div className="font-semibold text-black mb-1 text-xl">
             {collegeName}
           </div>
-
           <div className="text-md text-gray-600 mb-2">{location}</div>
 
-          <div className="flex flex-row gap-x-4 text-md">
+          <div className="flex flex-row gap-x-4 text-md mb-2">
             <div>Cost:</div>
             <div className="font-medium">${cost}</div>
 
@@ -71,11 +68,27 @@ const CollegeCards = ({
           </div>
         </div>
       </div>
-      <button className="text-xs" onClick={() => setOpenMore(!openMore)}>
+
+      {/* Show More button */}
+      <button
+        className="flex items-center gap-1 text-md font-semibold text-gray-600 hover:text-gray-900 transition-colors mt-2"
+        onClick={() => setOpenMore(!openMore)}
+      >
         SEE MORE
+        {openMore ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
       </button>
-      {/* {Show More} */}
-      {openMore && <div>hello</div>}
+
+      {/* Accepted Exams */}
+      {openMore && <ShowExamsAccepted exams={clepExams} />}
+
+      {/* Last Updated (month and year only) */}
+      <div className="mt-3 text-sm text-gray-500">
+        Last Updated:{" "}
+        {lastUpdated?.toLocaleString("default", {
+          month: "long",
+          year: "numeric",
+        })}
+      </div>
     </div>
   );
 };
