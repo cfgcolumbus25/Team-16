@@ -31,6 +31,8 @@ const locationCoordinates: { [key: string]: LatLngExpression } = {
   'Ithaca': [42.4440, -76.5019],
   'Ohio': [40.4173, -82.9071], // Columbus, OH
   'Maryland': [38.9897, -76.9378], // College Park, MD
+  'Los Angeles': [34.0689, -118.4452], // UCLA
+  'Gainesville': [29.6436, -82.3549], // University of Florida
 };
 
 // Create custom colored markers for each location
@@ -49,6 +51,8 @@ const locationColors: { [key: string]: string } = {
   'Ithaca': 'red',
   'Ohio': 'blue',
   'Maryland': 'green',
+  'Los Angeles': 'orange',
+  'Gainesville': 'violet',
 };
 
 // Routing component
@@ -120,10 +124,12 @@ const MapResizer = ({ isFullscreen }: { isFullscreen: boolean }) => {
 
 // State center coordinates and zoom levels
 const stateCenters: { [key: string]: { center: LatLngExpression, zoom: number } } = {
-  'All': { center: [40.5, -78.0], zoom: 5 },
+  'All': { center: [38.0, -95.0], zoom: 4 },
   'New York': { center: [42.4440, -76.5019], zoom: 8 },
   'Ohio': { center: [40.4173, -82.9071], zoom: 7 },
   'Maryland': { center: [38.9897, -76.9378], zoom: 8 },
+  'California': { center: [34.0689, -118.4452], zoom: 8 },
+  'Florida': { center: [29.6436, -82.3549], zoom: 8 },
 };
 
 const Map = () => {
@@ -162,7 +168,7 @@ const Map = () => {
       location: "Ithaca",
       cost: 100000,
       acceptanceRate: 10,
-      clepAccept: 10,
+      clepAccept: 1,
       amountOfStudentClepScores: 20,
     },
     {
@@ -183,6 +189,24 @@ const Map = () => {
       clepAccept: 5,
       amountOfStudentClepScores: 20,
     },
+    {
+      id: 4,
+      collegeName: "UCLA",
+      location: "Los Angeles",
+      cost: 60000,
+      acceptanceRate: 8,
+      clepAccept: 7,
+      amountOfStudentClepScores: 30,
+    },
+    {
+      id: 5,
+      collegeName: "University of Florida",
+      location: "Gainesville",
+      cost: 48000,
+      acceptanceRate: 9,
+      clepAccept: 8,
+      amountOfStudentClepScores: 25,
+    },
   ];
 
   // Map locations to states
@@ -190,6 +214,8 @@ const Map = () => {
     'Ithaca': 'New York',
     'Ohio': 'Ohio',
     'Maryland': 'Maryland',
+    'Los Angeles': 'California',
+    'Gainesville': 'Florida',
   };
 
   // Filter colleges based on focused state
@@ -197,7 +223,7 @@ const Map = () => {
     ? colleges 
     : colleges.filter(college => locationToState[college.location] === focusedState);
 
-  const centerPosition: LatLngExpression = [40.5, -78.0]; // Center of the three locations
+  const centerPosition: LatLngExpression = [38.0, -95.0]; // Center of USA to show all colleges
 
   const handleCollegeSelect = (collegeId: number) => {
     setSelectedColleges(prev => {
@@ -305,6 +331,8 @@ const Map = () => {
             <option value="New York">New York</option>
             <option value="Ohio">Ohio</option>
             <option value="Maryland">Maryland</option>
+            <option value="California">California</option>
+            <option value="Florida">Florida</option>
           </select>
         </div>
         {/* Current Location Toggle */}
