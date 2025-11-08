@@ -26,9 +26,15 @@ import {
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+
   
-    // Type the helper function
-    const getPath = (link: string): string => `/${link.toLowerCase()}`;
+    const getPath = (link: string): string => {
+        if (link.toLowerCase() === 'clep search') {
+        return '/';
+        }
+        return `/${link.toLowerCase()}`;
+    };
+
 
     const handleLoginClick = (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);

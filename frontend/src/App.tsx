@@ -17,7 +17,7 @@ import CollegeContainer from "./containers/CollegeContainer.tsx";
 import FilterForm from "./components/filterFrame.tsx";
 
 function App() {
-  const links = ["CLEP Search", "Recent Events", "About Us"];
+  const links = ["CLEP Search", "About Us"];
 
   return (
     <>
