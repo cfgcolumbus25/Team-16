@@ -12,7 +12,7 @@ export type clepExamsAndScores = {
 };
 
 export type collegeDisplay = {
-  id: number;
+  id: number | string;
   collegeName: string;
   lastUpdated?: Date;
   location?: string;
