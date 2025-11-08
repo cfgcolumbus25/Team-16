@@ -183,50 +183,10 @@ const Map = () => {
 
   return (
     <div style={{ height: '100vh', width: '100%', position: 'relative' }}>
-      {/* Current Location Toggle - Top Right */}
+      {/* College Selection Panel - Top Left */}
       <div style={{ 
         position: 'absolute', 
-        top: '10px', 
-        right: '10px', 
-        zIndex: 1000, 
-        backgroundColor: 'white', 
-        padding: '12px', 
-        borderRadius: '8px',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
-        minWidth: '200px'
-      }}>
-        <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
-          <input
-            type="checkbox"
-            checked={useCurrentLocation}
-            onChange={(e) => {
-              setUseCurrentLocation(e.target.checked);
-              if (e.target.checked) {
-                getCurrentLocation();
-                setSelectedColleges([]);
-              } else {
-                setCurrentLocation(null);
-              }
-            }}
-            style={{ marginRight: '8px' }}
-          />
-          <strong>📍 Use My Current Location</strong>
-        </label>
-        {useCurrentLocation && !currentLocation && !locationError && (
-          <p style={{ fontSize: '11px', color: '#6b7280', margin: '5px 0 0 0' }}>Getting location...</p>
-        )}
-        {locationError && (
-          <p style={{ fontSize: '11px', color: '#ef4444', margin: '5px 0 0 0' }}>{locationError}</p>
-        )}
-        {useCurrentLocation && currentLocation && (
-          <p style={{ fontSize: '11px', color: '#10b981', margin: '5px 0 0 0' }}>✓ Location acquired</p>
-        )}
-      </div>
-
-      {/* College Selection - Top Left */}
-      <div style={{ 
-        position: 'absolute', 
-        top: '10px', 
+        top: '80px', 
         left: '10px', 
         zIndex: 1000, 
         backgroundColor: 'white', 
@@ -235,6 +195,37 @@ const Map = () => {
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         maxWidth: '250px'
       }}>
+        {/* Current Location Toggle */}
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
+          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
+            <input
+              type="checkbox"
+              checked={useCurrentLocation}
+              onChange={(e) => {
+                setUseCurrentLocation(e.target.checked);
+                if (e.target.checked) {
+                  getCurrentLocation();
+                  setSelectedColleges([]);
+                } else {
+                  setCurrentLocation(null);
+                }
+              }}
+              style={{ marginRight: '8px' }}
+            />
+            <strong>📍 Use My Current Location</strong>
+          </label>
+          {useCurrentLocation && !currentLocation && !locationError && (
+            <p style={{ fontSize: '11px', color: '#6b7280', margin: '5px 0 0 0' }}>Getting location...</p>
+          )}
+          {locationError && (
+            <p style={{ fontSize: '11px', color: '#ef4444', margin: '5px 0 0 0' }}>{locationError}</p>
+          )}
+          {useCurrentLocation && currentLocation && (
+            <p style={{ fontSize: '11px', color: '#10b981', margin: '5px 0 0 0' }}>✓ Location acquired</p>
+          )}
+        </div>
+
+        {/* College Selection */}
         <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>
           {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
         </h3>
