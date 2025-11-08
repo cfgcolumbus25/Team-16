@@ -5,9 +5,9 @@ import { useThemeMode } from "../contexts/ThemeContext";
 import type { collegeDisplay } from "./collegeCards";
 import type { Dispatch, SetStateAction } from "react";
 
-export type filterFormProps = {
-  setColleges: Dispatch<SetStateAction<collegeDisplay[]>>;
-};
+// export type filterFormProps = {
+//   setColleges: Dispatch<SetStateAction<collegeDisplay[]>>;
+// };
 
 type ClepScore = {
   examName: string;
@@ -18,7 +18,7 @@ type ClepScore = {
 //   setColleges: (colleges: collegeDisplay[]) => [];
 // };
 
-export default function FilterForm({ setColleges }: filterFormProps) {
+export default function FilterForm() {
   const { mode } = useThemeMode();
   const isDark = mode === "dark";
 
@@ -109,7 +109,7 @@ export default function FilterForm({ setColleges }: filterFormProps) {
       setStudentLocation("");
       setInOrOutOfState(null);
       setClepScores([]);
-      setColleges(result);
+      // setColleges(result);
     } catch (error: any) {
       // Handle network errors or the error thrown above
       console.error("Submission failed:", error);

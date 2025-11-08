@@ -2,11 +2,9 @@ import { useState } from "react";
 import CollegeCards, { type collegeDisplay } from "../components/collegeCards";
 import { useThemeMode } from "../contexts/ThemeContext";
 
-type Props = {
-  colleges: any[];
-};
 
-const CollegeContainer = ({colleges}: Props) => {
+
+const CollegeContainer = () => {
   const { mode } = useThemeMode();
   const isDark = mode === 'dark';
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,146 +14,145 @@ const CollegeContainer = ({colleges}: Props) => {
   const costOptions = ["All", "< 50,000", "50,000 - 75,000", "> 75,000"];
   const acceptanceOptions = ["All", "< 5%", "5% - 10%", "> 10%"];
   const creditOptions = ["All", "< 18", "18 - 20", "> 20"];
-  // const [colleges, setColleges] = useState<collegeDisplay[]>([])
-  // const colleges = [
-  //   {
-  //     id: 1,
-  //     collegeName: "Cornell University",
-  //     location: "Ithaca",
-  //     cost: 100000,
-  //     acceptanceRate: 10,
-  //     clepAccept: 0,
-  //     amountOfStudentClepScores: 20,
-  //     creditLimit: 18, // new field
-  //     lastUpdated: new Date("2025-09-01"), // new field
-  //     clepExams: [
-  //       {
-  //         examName: "College Algebra",
-  //         thresholdScore: 63,
-  //         courseName: "MATH 110",
-  //         numberOfCredits: 3,
-  //       },
-  //       {
-  //         examName: "Introductory Psychology",
-  //         thresholdScore: 55,
-  //         courseName: "PSYCH 1010",
-  //         numberOfCredits: 3,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 2,
-  //     collegeName: "Ohio State University",
-  //     location: "Ohio",
-  //     cost: 50000,
-  //     acceptanceRate: 5,
-  //     clepAccept: 0,
-  //     amountOfStudentClepScores: 20,
-  //     creditLimit: 20,
-  //     lastUpdated: new Date("2025-08-15"),
-  //     clepExams: [
-  //       {
-  //         examName: "College Composition",
-  //         thresholdScore: 50,
-  //         courseName: "ENGR 1110",
-  //         numberOfCredits: 3,
-  //       },
-  //       {
-  //         examName: "Biology",
-  //         thresholdScore: 60,
-  //         courseName: "BIO 1101",
-  //         numberOfCredits: 4,
-  //       },
-  //       {
-  //         examName: "American Government",
-  //         thresholdScore: 55,
-  //         courseName: "POLSCI 1010",
-  //         numberOfCredits: 3,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 3,
-  //     collegeName: "University of Maryland",
-  //     location: "Maryland",
-  //     cost: 50000,
-  //     acceptanceRate: 10,
-  //     clepAccept: 0,
-  //     amountOfStudentClepScores: 20,
-  //     creditLimit: 19,
-  //     lastUpdated: new Date("2025-07-10"),
-  //     clepExams: [
-  //       {
-  //         examName: "History of the United States I",
-  //         thresholdScore: 50,
-  //         courseName: "HIST 201",
-  //         numberOfCredits: 3,
-  //       },
-  //       {
-  //         examName: "Spanish Language",
-  //         thresholdScore: 63,
-  //         courseName: "SPAN 103",
-  //         numberOfCredits: 6,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 4,
-  //     collegeName: "UCLA",
-  //     location: "Los Angeles",
-  //     cost: 60000,
-  //     acceptanceRate: 8,
-  //     clepAccept: 0,
-  //     amountOfStudentClepScores: 20,
-  //     creditLimit: 21,
-  //     lastUpdated: new Date("2025-09-05"),
-  //     clepExams: [
-  //       {
-  //         examName: "Precalculus",
-  //         thresholdScore: 61,
-  //         courseName: "MATH 115",
-  //         numberOfCredits: 3,
-  //       },
-  //       {
-  //         examName: "Chemistry",
-  //         thresholdScore: 65,
-  //         courseName: "CHEM 101A",
-  //         numberOfCredits: 4,
-  //       },
-  //       {
-  //         examName: "Analyzing & Interpreting Literature",
-  //         thresholdScore: 50,
-  //         courseName: "ENGL 100",
-  //         numberOfCredits: 3,
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     id: 5,
-  //     collegeName: "University of Florida",
-  //     location: "Gainesville",
-  //     cost: 48000,
-  //     acceptanceRate: 9,
-  //     clepAccept: 0,
-  //     amountOfStudentClepScores: 20,
-  //     creditLimit: 20,
-  //     lastUpdated: new Date("2025-08-20"),
-  //     clepExams: [
-  //       {
-  //         examName: "Human Growth & Development",
-  //         thresholdScore: 50,
-  //         courseName: "PSY 2012",
-  //         numberOfCredits: 3,
-  //       },
-  //       {
-  //         examName: "Information Systems",
-  //         thresholdScore: 60,
-  //         courseName: "BSC 2010",
-  //         numberOfCredits: 3,
-  //       },
-  //     ],
-  //   },
-  // ];
+  const colleges = [
+    {
+      id: 1,
+      collegeName: "Cornell University",
+      location: "Ithaca",
+      cost: 100000,
+      acceptanceRate: 10,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
+      creditLimit: 18, // new field
+      lastUpdated: new Date("2025-09-01"), // new field
+      clepExams: [
+        {
+          examName: "College Algebra",
+          thresholdScore: 63,
+          courseName: "MATH 110",
+          numberOfCredits: 3,
+        },
+        {
+          examName: "Introductory Psychology",
+          thresholdScore: 55,
+          courseName: "PSYCH 1010",
+          numberOfCredits: 3,
+        },
+      ],
+    },
+    {
+      id: 2,
+      collegeName: "Ohio State University",
+      location: "Ohio",
+      cost: 50000,
+      acceptanceRate: 5,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
+      creditLimit: 20,
+      lastUpdated: new Date("2025-08-15"),
+      clepExams: [
+        {
+          examName: "College Composition",
+          thresholdScore: 50,
+          courseName: "ENGR 1110",
+          numberOfCredits: 3,
+        },
+        {
+          examName: "Biology",
+          thresholdScore: 60,
+          courseName: "BIO 1101",
+          numberOfCredits: 4,
+        },
+        {
+          examName: "American Government",
+          thresholdScore: 55,
+          courseName: "POLSCI 1010",
+          numberOfCredits: 3,
+        },
+      ],
+    },
+    {
+      id: 3,
+      collegeName: "University of Maryland",
+      location: "Maryland",
+      cost: 50000,
+      acceptanceRate: 10,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
+      creditLimit: 19,
+      lastUpdated: new Date("2025-07-10"),
+      clepExams: [
+        {
+          examName: "History of the United States I",
+          thresholdScore: 50,
+          courseName: "HIST 201",
+          numberOfCredits: 3,
+        },
+        {
+          examName: "Spanish Language",
+          thresholdScore: 63,
+          courseName: "SPAN 103",
+          numberOfCredits: 6,
+        },
+      ],
+    },
+    {
+      id: 4,
+      collegeName: "UCLA",
+      location: "Los Angeles",
+      cost: 60000,
+      acceptanceRate: 8,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
+      creditLimit: 21,
+      lastUpdated: new Date("2025-09-05"),
+      clepExams: [
+        {
+          examName: "Precalculus",
+          thresholdScore: 61,
+          courseName: "MATH 115",
+          numberOfCredits: 3,
+        },
+        {
+          examName: "Chemistry",
+          thresholdScore: 65,
+          courseName: "CHEM 101A",
+          numberOfCredits: 4,
+        },
+        {
+          examName: "Analyzing & Interpreting Literature",
+          thresholdScore: 50,
+          courseName: "ENGL 100",
+          numberOfCredits: 3,
+        },
+      ],
+    },
+    {
+      id: 5,
+      collegeName: "University of Florida",
+      location: "Gainesville",
+      cost: 48000,
+      acceptanceRate: 9,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
+      creditLimit: 20,
+      lastUpdated: new Date("2025-08-20"),
+      clepExams: [
+        {
+          examName: "Human Growth & Development",
+          thresholdScore: 50,
+          courseName: "PSY 2012",
+          numberOfCredits: 3,
+        },
+        {
+          examName: "Information Systems",
+          thresholdScore: 60,
+          courseName: "BSC 2010",
+          numberOfCredits: 3,
+        },
+      ],
+    },
+  ];
 
   colleges.forEach((college) => {
     college.clepAccept = college.clepExams.length;
