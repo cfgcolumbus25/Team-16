@@ -8,9 +8,9 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import "./App.css";
-import CollegeContainer from "./containers/CollegeContainer";
 import Map from './components/Map.tsx';
 import Login from './components/login';
+import CollegeContainer from "./containers/collegeContainer.tsx";
 
 function App() {
   const links = ["CLEP Search", "Recent Events"];
@@ -34,8 +34,7 @@ function App() {
           } />
         </Routes>
         <Footer />
-      </Router>
-      <CollegeContainer />                                                                                                                                                              
+      </Router>                                                                                                                                                             
     </>
   );
 }
