@@ -27,7 +27,7 @@ export default function StudentLocationInput({ setStudentLocation }: Props) {
 
       <GeoapifyContext apiKey={apiKey}>
         <GeoapifyGeocoderAutocomplete
-          placeholder="Enter city, address, or ZIP..."
+          placeholder="Enter city"
           lang="en"
           limit={7}
           countryCodes={["us"]}
