@@ -2,13 +2,23 @@ import React, { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import StudentLocationInput from "./StudentLocationInput";
 import { useThemeMode } from "../contexts/ThemeContext";
+import type { collegeDisplay } from "./collegeCards";
+import type { Dispatch, SetStateAction } from "react";
+
+export type filterFormProps = {
+  setColleges: Dispatch<SetStateAction<collegeDisplay[]>>;
+};
 
 type ClepScore = {
   examName: string;
   score: number;
 };
 
-export default function FilterForm() {
+// export type filterFormProps = {
+//   setColleges: (colleges: collegeDisplay[]) => [];
+// };
+
+export default function FilterForm({ setColleges }: filterFormProps) {
   const { mode } = useThemeMode();
   const isDark = mode === "dark";
 
@@ -43,7 +53,10 @@ export default function FilterForm() {
       return;
     }
 
-    setClepScores([...clepScores, { examName: currentExam, score: scoreAsNumber }]);
+    setClepScores([
+      ...clepScores,
+      { examName: currentExam, score: scoreAsNumber },
+    ]);
     setCurrentExam("");
     setCurrentScore(0);
   };
@@ -53,22 +66,20 @@ export default function FilterForm() {
   };
 
   const submitForm = async () => {
-  
     // 1. Transform the CLEP scores array to the new format
-    const formattedClepExams = clepScores.map(exam => ({
+    const formattedClepExams = clepScores.map((exam) => ({
       subject: exam.examName, // 'examName' becomes 'subject'
-      score: exam.score
+      score: exam.score,
     }));
 
     // 2. Create the payload with the new keys
     const payload = {
-      userLocation: studentLocation, 
-      inState: inOrOutOfState,        
-      clepExamsTaken: formattedClepExams, 
+      userLocation: studentLocation,
+      inState: inOrOutOfState,
+      clepExamsTaken: formattedClepExams,
     };
 
-
-    console.log("Submitting →", payload); 
+    console.log("Submitting →", payload);
 
     setIsSubmitting(true);
     setSubmitError(null);
@@ -76,13 +87,16 @@ export default function FilterForm() {
 
     try {
       // replace this URL with actual API endpoint
-      const response = await fetch('http://127.0.0.1:5000/api/clep_policies/filter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload), // Send the newly formatted payload
-      });
+      const response = await fetch(
+        "http://127.0.0.1:5000/api/clep_policies/filter",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload), // Send the newly formatted payload
+        }
+      );
 
       if (!response.ok) {
         // Handle server errors (e.g., 404, 500)
@@ -90,17 +104,16 @@ export default function FilterForm() {
       }
 
       const result = await response.json();
-      console.log('Success:', result);
+      console.log("Success:", result);
       setSubmitSuccess(true); // Set success state
       setStudentLocation("");
       setInOrOutOfState(null);
       setClepScores([]);
-
+      setColleges(result);
     } catch (error: any) {
       // Handle network errors or the error thrown above
-      console.error('Submission failed:', error);
+      console.error("Submission failed:", error);
       setSubmitError(error.message || "An unknown error occurred.");
-
     } finally {
       setIsSubmitting(false);
     }
@@ -120,15 +133,21 @@ export default function FilterForm() {
 
       {/* State Preference */}
       <div>
-        <label className={`font-medium text-sm block ${isDark ? "text-blue-200" : ""}`}>
+        <label
+          className={`font-medium text-sm block ${
+            isDark ? "text-blue-200" : ""
+          }`}
+        >
           State Preference
         </label>
         <select
           className={`border rounded-md p-2 w-full ${
-            isDark ? "bg-slate-700 border-blue-600 text-blue-50" : "bg-white border-gray-300"
+            isDark
+              ? "bg-slate-700 border-blue-600 text-blue-50"
+              : "bg-white border-gray-300"
           }`}
           onChange={(e) => setInOrOutOfState(e.target.value === "in")}
-          value={inOrOutOfState === null ? "" : (inOrOutOfState ? "in" : "out")} // Control the component
+          value={inOrOutOfState === null ? "" : inOrOutOfState ? "in" : "out"} // Control the component
         >
           <option value="">Select...</option>
           <option value="in">In-State</option>
@@ -138,7 +157,9 @@ export default function FilterForm() {
 
       {/* CLEP Scores */}
       <div>
-        <label className={`font-medium text-sm ${isDark ? "text-blue-200" : ""}`}>
+        <label
+          className={`font-medium text-sm ${isDark ? "text-blue-200" : ""}`}
+        >
           Add CLEP Scores
         </label>
 
@@ -146,18 +167,25 @@ export default function FilterForm() {
           {/* Test Name */}
           <div className="flex-1">
             <label className="font-medium text-sm block mb-1">Test Name</label>
-            <Combobox value={currentExam} onChange={(val) => setCurrentExam(val ?? "")}>
+            <Combobox
+              value={currentExam}
+              onChange={(val) => setCurrentExam(val ?? "")}
+            >
               <div className="relative">
                 <Combobox.Input
                   className={`border p-2 rounded-md w-full ${
-                    isDark ? "bg-slate-700 border-blue-600 text-blue-50" : "bg-white border-gray-300"
+                    isDark
+                      ? "bg-slate-700 border-blue-600 text-blue-50"
+                      : "bg-white border-gray-300"
                   }`}
                   placeholder="Exam Name"
                   onChange={(e) => setCurrentExam(e.target.value)}
                 />
                 <Combobox.Options
                   className={`absolute z-10 w-full mt-1 border rounded-md shadow-lg ${
-                    isDark ? "bg-slate-800 border-blue-600 text-blue-50" : "bg-white border-gray-300"
+                    isDark
+                      ? "bg-slate-800 border-blue-600 text-blue-50"
+                      : "bg-white border-gray-300"
                   }`}
                 >
                   {examList.map((exam) => (
@@ -185,10 +213,14 @@ export default function FilterForm() {
               max={80}
               value={currentScore}
               onChange={(e) =>
-                setCurrentScore(e.target.value === "" ? "" : Number(e.target.value))
+                setCurrentScore(
+                  e.target.value === "" ? "" : Number(e.target.value)
+                )
               }
               className={`w-20 border p-2 rounded-md ${
-                isDark ? "bg-slate-700 border-blue-600 text-blue-50" : "bg-white border-gray-300"
+                isDark
+                  ? "bg-slate-700 border-blue-600 text-blue-50"
+                  : "bg-white border-gray-300"
               }`}
             />
           </div>
@@ -210,7 +242,9 @@ export default function FilterForm() {
                 isDark ? "text-blue-200" : "text-gray-700"
               }`}
             >
-              <span>• {item.examName} — Score: {item.score}</span>
+              <span>
+                • {item.examName} — Score: {item.score}
+              </span>
               <button
                 onClick={() => removeExam(idx)}
                 className="ml-2 px-2 py-0.5 rounded-full bg-amber-200 border border-amber-900 text-black"
