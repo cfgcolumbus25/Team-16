@@ -2,3 +2,4 @@ backend/project_env
 backend/routes/__pycache__
 backend/config/__pycache__
 .env
+venv

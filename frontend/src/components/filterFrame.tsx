@@ -64,7 +64,7 @@ export default function FilterForm() {
     const payload = {
       userLocation: studentLocation, 
       inState: inOrOutOfState,        
-      clepExams: formattedClepExams, 
+      clepExamsTaken: formattedClepExams, 
     };
 
 
@@ -76,7 +76,7 @@ export default function FilterForm() {
 
     try {
       // replace this URL with actual API endpoint
-      const response = await fetch('https://api.the-endpoint.com/submit', {
+      const response = await fetch('http://127.0.0.1:5000/api/clep_policies/filter', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
