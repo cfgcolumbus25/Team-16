@@ -212,11 +212,15 @@ const CollegeContainer = () => {
               isDark ? 'text-blue-200' : ''
             }`}>Filter Cost:</p>
             <select
+<<<<<<< Updated upstream
+              className="border p-1 rounded w-full border-gray-300"
+=======
               className={`border p-1 rounded w-full ${
                 isDark
                   ? 'bg-slate-700 border-blue-600 text-blue-50'
                   : 'bg-white border-gray-300'
               }`}
+>>>>>>> Stashed changes
               value={filterCost}
               onChange={(e) => setfilterCost(e.target.value)}
             >
@@ -234,11 +238,15 @@ const CollegeContainer = () => {
               isDark ? 'text-blue-200' : ''
             }`}>Acceptance:</p>
             <select
+<<<<<<< Updated upstream
+              className="border p-1 rounded w-full border-gray-300"
+=======
               className={`border p-1 rounded w-full ${
                 isDark
                   ? 'bg-slate-700 border-blue-600 text-blue-50'
                   : 'bg-white border-gray-300'
               }`}
+>>>>>>> Stashed changes
               value={filterAcceptance}
               onChange={(e) => setfilterAcceptance(e.target.value)}
             >
@@ -256,11 +264,15 @@ const CollegeContainer = () => {
               isDark ? 'text-blue-200' : ''
             }`}>Credit:</p>
             <select
+<<<<<<< Updated upstream
+              className="border p-1 rounded w-full border-gray-300"
+=======
               className={`border p-1 rounded w-full ${
                 isDark
                   ? 'bg-slate-700 border-blue-600 text-blue-50'
                   : 'bg-white border-gray-300'
               }`}
+>>>>>>> Stashed changes
               value={filterCredit}
               onChange={(e) => setfilterCredit(e.target.value)}
             >
