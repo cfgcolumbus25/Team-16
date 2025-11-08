@@ -7,7 +7,6 @@ reviews_bp = Blueprint('reviews', __name__)
 REQUIRED_FIELDS = {
     "uni_clep_id": str,
     "good_experince": bool,
-    "submitted_at": datetime,
 }
 
 @reviews_bp.route('/reviews', methods=['GET'])
