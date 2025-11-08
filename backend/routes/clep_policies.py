@@ -119,7 +119,7 @@ def get_clep_policies_filtered():
         clep_records = supabase.table("clep_policies").select("*").execute().data
         clep_exams = supabase.table("clep_exams").select("*").execute().data
         # --- Fetched all reviews ---
-        all_reviews = supabase.table("reviews").select("uni_clep_id, good_experince, submitted_at").execute().data
+        all_reviews = supabase.table("reviews").select("uni_clep_id, good_experience, submitted_at").execute().data
 
         # Create lookup for CLEP exam names
         clep_name_map = {c["clep_id"]: c["clep_exam_name"].lower() for c in clep_exams}
@@ -196,7 +196,7 @@ def get_clep_policies_filtered():
                                 
                                 # Count review ONLY if it was submitted AFTER the policy update
                                 if submitted_at_dt > last_updated_dt:
-                                    if review.get("good_experince"): # Use .get() for safety
+                                    if review.get("good_experience"): # Use .get() for safety
                                         good_reviews += 1
                                     else:
                                         bad_reviews += 1
