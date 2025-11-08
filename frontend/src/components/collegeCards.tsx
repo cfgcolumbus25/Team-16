@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 export type clepExamsAndScores = {
   examName: string;
@@ -10,9 +11,11 @@ export type clepExamsAndScores = {
 export type collegeDisplay = {
   id: number;
   collegeName: string;
+  lastUpdated?: Date, 
   location?: string;
   cost?: number;
   acceptanceRate?: number;
+  creditLimit?: number,
   clepAccept: number;
   amountOfStudentClepScores: number;
   clepExams: clepExamsAndScores[];
@@ -21,10 +24,12 @@ export type collegeDisplay = {
 const CollegeCards = ({
   id,
   collegeName,
+  lastUpdated,
   location,
   cost,
   acceptanceRate,
   clepAccept,
+  creditLimit,
   amountOfStudentClepScores,
   clepExams,
 }: collegeDisplay) => {
@@ -40,6 +45,10 @@ const CollegeCards = ({
           {clepAccept} / {amountOfStudentClepScores} Accepted CLEP Exams
         </div>
       </div>
+      {/* <div className="flex flex-col">
+        <p>Last Updated:</p>
+        {lastUpdated ?? <div>{lastUpdated}</div>}
+      </div> */}
 
       {/* College Info */}
       <div className="flex items-start space-x-3">
@@ -56,10 +65,15 @@ const CollegeCards = ({
 
             <div>Acceptance Rate:</div>
             <div className="font-medium">{acceptanceRate}%</div>
+
+            <div>Credit Limit:</div>
+            <div className="font-medium">{creditLimit}</div>
           </div>
         </div>
       </div>
-      <button onClick={() => setOpenMore(!openMore)}>See More</button>
+      <button className="text-xs" onClick={() => setOpenMore(!openMore)}>
+        SEE MORE
+      </button>
       {/* {Show More} */}
       {openMore && <div>hello</div>}
     </div>

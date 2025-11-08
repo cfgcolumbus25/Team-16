@@ -75,7 +75,7 @@ const CollegeContainer = () => {
   });
 
   return (
-    <div className="w-[50%] p-5 space-y-2">
+    <div className="p-5 space-y-2">
       <input
         type="text"
         placeholder="Search College Name..."
