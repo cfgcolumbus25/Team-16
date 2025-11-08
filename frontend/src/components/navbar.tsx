@@ -10,10 +10,14 @@ import {
     Button,
     Menu,
     MenuItem,
+    IconButton,
   } from '@mui/material';
   import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
   import DrawerComp from './drawer';
   import { useState } from 'react';
+  import DarkModeIcon from '@mui/icons-material/DarkMode';
+  import LightModeIcon from '@mui/icons-material/LightMode';
+  import { useThemeMode } from '../contexts/ThemeContext';
   
   interface NavBarProps {
     links: string[];
@@ -26,6 +30,7 @@ import {
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const { mode, toggleTheme } = useThemeMode();
   
     // Type the helper function
     const getPath = (link: string): string => `/${link.toLowerCase()}`;
@@ -47,8 +52,10 @@ import {
       <AppBar
         position="sticky"
         sx={{
-          backgroundImage:
-            'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+          backgroundImage: mode === 'dark'
+            ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+            : 'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+          transition: 'background-image 0.3s ease',
         }}
       >
         <Toolbar>
@@ -76,7 +83,20 @@ import {
               <DrawerComp links={links} />
               
               {/* LOGIN BUTTON FOR MOBILE */}
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}>
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
+                <IconButton
+                  onClick={toggleTheme}
+                  sx={{
+                    color: mode === 'dark' ? '#a8d0f0' : 'black',
+                    '&:hover': {
+                      backgroundColor: mode === 'dark' ? 'rgba(168, 208, 240, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                  aria-label="toggle dark mode"
+                >
+                  {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
                 <Button
                   variant="contained"
                   onClick={handleLoginClick}
@@ -153,7 +173,10 @@ import {
                         component={RouterLink}
                         to={path}
                         value={path}
-                        sx={{ color: 'black' }}
+                        sx={{ 
+                          color: mode === 'dark' ? '#e8f0f8' : 'black',
+                          transition: 'color 0.3s ease',
+                        }}
                       />
                     );
                   })}
@@ -161,7 +184,20 @@ import {
               </Box>
   
               {/* RIGHT LOGIN BUTTON */}
-              <Box sx={{ minWidth: '200px', display: 'flex', justifyContent: 'flex-end' }}>
+              <Box sx={{ minWidth: '200px', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 1 }}>
+                <IconButton
+                  onClick={toggleTheme}
+                  sx={{
+                    color: mode === 'dark' ? '#a8d0f0' : 'black',
+                    '&:hover': {
+                      backgroundColor: mode === 'dark' ? 'rgba(168, 208, 240, 0.2)' : 'rgba(0, 0, 0, 0.1)',
+                    },
+                    transition: 'all 0.3s ease',
+                  }}
+                  aria-label="toggle dark mode"
+                >
+                  {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
                 <Button
                   variant="contained"
                   onClick={handleLoginClick}
