@@ -47,7 +47,6 @@ const CollegeCards = ({
           ? 'border-blue-700 bg-gradient-to-br from-slate-800 to-slate-900 text-blue-50'
           : 'border-gray-300 bg-white'
       }`}
-      style={{ cursor: "pointer" }}
     >
       {/* Badge in the corner */}
       <div className="absolute top-3 right-3 px-2 py-1 rounded-full border bg-amber-200 border-amber-900">
@@ -87,7 +86,7 @@ const CollegeCards = ({
 
       {/* Show More button */}
       <button
-        className={`flex items-center gap-1 text-md font-semibold transition-colors mt-2 ${
+        className={`flex items-center gap-1 text-md font-semibold transition-colors mt-2 cursor-pointer ${
           isDark
             ? 'text-blue-200 hover:text-blue-50'
             : 'text-gray-600 hover:text-gray-900'

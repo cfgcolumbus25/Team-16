@@ -1,5 +1,5 @@
 import { useState } from "react";
-import CollegeCards from "../components/collegeCards";
+import CollegeCards, { type collegeDisplay } from "../components/collegeCards";
 import { useThemeMode } from "../contexts/ThemeContext";
 
 const CollegeContainer = () => {
@@ -12,7 +12,7 @@ const CollegeContainer = () => {
   const costOptions = ["All", "< 50,000", "50,000 - 75,000", "> 75,000"];
   const acceptanceOptions = ["All", "< 5%", "5% - 10%", "> 10%"];
   const creditOptions = ["All", "< 18", "18 - 20", "> 20"];
-
+  // const [colleges, setColleges] = useState<collegeDisplay[]>([])
   const colleges = [
     {
       id: 1,
