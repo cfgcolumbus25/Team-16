@@ -90,6 +90,29 @@ const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
 
 const Map = () => {
   const [selectedColleges, setSelectedColleges] = useState<number[]>([]);
+  const [currentLocation, setCurrentLocation] = useState<LatLngExpression | null>(null);
+  const [useCurrentLocation, setUseCurrentLocation] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  
+  // Get user's current location
+  const getCurrentLocation = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation([latitude, longitude]);
+          setUseCurrentLocation(true);
+          setLocationError(null);
+        },
+        (error) => {
+          setLocationError('Unable to get location: ' + error.message);
+          setUseCurrentLocation(false);
+        }
+      );
+    } else {
+      setLocationError('Geolocation not supported');
+    }
+  };
   
   // Hardcoded colleges data - matches CollegeContainer
   const colleges: College[] = [
@@ -137,6 +160,15 @@ const Map = () => {
   };
 
   const getRoutePoints = () => {
+    if (useCurrentLocation && currentLocation && selectedColleges.length === 1) {
+      const college = colleges.find(c => c.id === selectedColleges[0]);
+      if (!college) return null;
+      return {
+        start: currentLocation,
+        end: locationCoordinates[college.location]
+      };
+    }
+    
     if (selectedColleges.length !== 2) return null;
     const college1 = colleges.find(c => c.id === selectedColleges[0]);
     const college2 = colleges.find(c => c.id === selectedColleges[1]);
@@ -162,7 +194,39 @@ const Map = () => {
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         maxWidth: '250px'
       }}>
-        <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>Select 2 Colleges for Route</h3>
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>
+          {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
+        </h3>
+        
+        <div style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
+          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px', marginBottom: '8px' }}>
+            <input
+              type="checkbox"
+              checked={useCurrentLocation}
+              onChange={(e) => {
+                setUseCurrentLocation(e.target.checked);
+                if (e.target.checked) {
+                  getCurrentLocation();
+                  setSelectedColleges([]);
+                } else {
+                  setCurrentLocation(null);
+                }
+              }}
+              style={{ marginRight: '8px' }}
+            />
+            <strong>Use My Current Location</strong>
+          </label>
+          {useCurrentLocation && !currentLocation && !locationError && (
+            <p style={{ fontSize: '11px', color: '#6b7280', margin: '0' }}>Getting location...</p>
+          )}
+          {locationError && (
+            <p style={{ fontSize: '11px', color: '#ef4444', margin: '0' }}>{locationError}</p>
+          )}
+          {useCurrentLocation && currentLocation && (
+            <p style={{ fontSize: '11px', color: '#10b981', margin: '0' }}>✓ Location acquired</p>
+          )}
+        </div>
+
         {colleges.map(college => (
           <div key={college.id} style={{ marginBottom: '5px' }}>
             <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px' }}>
@@ -170,15 +234,21 @@ const Map = () => {
                 type="checkbox"
                 checked={selectedColleges.includes(college.id)}
                 onChange={() => handleCollegeSelect(college.id)}
+                disabled={useCurrentLocation && selectedColleges.length >= 1 && !selectedColleges.includes(college.id)}
                 style={{ marginRight: '8px' }}
               />
               {college.collegeName}
             </label>
           </div>
         ))}
-        {selectedColleges.length === 2 && (
+        {((selectedColleges.length === 2 && !useCurrentLocation) || 
+          (selectedColleges.length === 1 && useCurrentLocation)) && (
           <button 
-            onClick={() => setSelectedColleges([])}
+            onClick={() => {
+              setSelectedColleges([]);
+              setUseCurrentLocation(false);
+              setCurrentLocation(null);
+            }}
             style={{ 
               marginTop: '10px', 
               padding: '5px 10px', 
@@ -205,6 +275,13 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         />
+        {currentLocation && useCurrentLocation && (
+          <Marker position={currentLocation} icon={createColoredIcon('violet')}>
+            <Popup>
+              <strong>Your Current Location</strong>
+            </Popup>
+          </Marker>
+        )}
         {colleges.map((college) => {
           const position = locationCoordinates[college.location];
           const color = locationColors[college.location] || 'blue';
