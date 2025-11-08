@@ -104,6 +104,20 @@ const MapFocus = ({ center, zoom }: MapFocusProps) => {
   return null;
 };
 
+// Component to handle map resize
+const MapResizer = ({ isFullscreen }: { isFullscreen: boolean }) => {
+  const map = useMap();
+  
+  useEffect(() => {
+    // Small delay to ensure DOM has updated
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+  }, [map, isFullscreen]);
+  
+  return null;
+};
+
 // State center coordinates and zoom levels
 const stateCenters: { [key: string]: { center: LatLngExpression, zoom: number } } = {
   'All': { center: [40.5, -78.0], zoom: 5 },
@@ -118,6 +132,7 @@ const Map = () => {
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [focusedState, setFocusedState] = useState<string>('All');
+  const [isFullscreen, setIsFullscreen] = useState(false);
   
   // Get user's current location
   const getCurrentLocation = () => {
@@ -219,8 +234,44 @@ const Map = () => {
   const routePoints = getRoutePoints();
   const currentStateView = stateCenters[focusedState] || stateCenters['All'];
 
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
+  };
+
   return (
-    <div style={{ height: '100vh', width: '100%', position: 'relative' }}>
+    <div style={{ 
+      height: isFullscreen ? '100vh' : '100vh', 
+      width: isFullscreen ? '100vw' : '100%', 
+      position: isFullscreen ? 'fixed' : 'relative',
+      top: isFullscreen ? 0 : 'auto',
+      left: isFullscreen ? 0 : 'auto',
+      zIndex: isFullscreen ? 9999 : 'auto',
+      backgroundColor: 'white'
+    }}>
+      {/* Fullscreen Button - Top Right */}
+      <button
+        onClick={toggleFullscreen}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '10px',
+          zIndex: 1001,
+          backgroundColor: 'white',
+          border: '2px solid rgba(0,0,0,0.2)',
+          borderRadius: '4px',
+          padding: '8px 12px',
+          cursor: 'pointer',
+          fontSize: '18px',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px'
+        }}
+        title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+      >
+        {isFullscreen ? '✕' : '⛶'}
+      </button>
+
       {/* College Selection Panel - Top Left */}
       <div style={{ 
         position: 'absolute', 
@@ -340,6 +391,7 @@ const Map = () => {
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         />
         <MapFocus center={currentStateView.center} zoom={currentStateView.zoom} />
+        <MapResizer isFullscreen={isFullscreen} />
         {currentLocation && useCurrentLocation && (
           <Marker position={currentLocation} icon={createColoredIcon('violet')}>
             <Popup>
