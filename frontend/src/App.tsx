@@ -53,7 +53,18 @@ function App() {
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/about us" element={<AboutUs />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={
+            <div style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '1fr 2fr 2fr', 
+              gap: '16px', 
+              padding: '16px' 
+            }}>
+              <FilterForm/>
+              <CollegeContainer />
+              <Map />
+            </div>
+          } />
         </Routes>
         <Footer />
       </Router>

@@ -53,7 +53,7 @@ export default function FilterForm() {
 
   return (
     <div
-      className={`max-w-lg mx-auto p-6 border rounded-xl shadow-sm space-y-6 ${
+      className={`p-6 border rounded-xl bg-white shadow-sm space-y-6 ${
         isDark
           ? "bg-gradient-to-br from-slate-800 to-slate-900 border-blue-700 text-blue-50"
           : "bg-white border-gray-300"

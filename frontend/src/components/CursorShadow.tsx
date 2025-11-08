@@ -30,7 +30,7 @@ const CursorShadow = () => {
         boxShadow: '0 0 50px 25px rgba(168, 208, 240, 0.25), 0 0 100px 50px rgba(168, 208, 240, 0.12)',
       }
     : {
-        boxShadow: '0 0 50px 25px rgba(255, 203, 5, 0.15), 0 0 100px 50px rgba(255, 203, 5, 0.08)',
+        boxShadow: '0 0 50px 25px rgba(255, 203, 5, 0.3), 0 0 100px 50px rgba(255, 203, 5, 0.15), 0 0 150px 75px rgba(255, 255, 255, 0.1)',
       };
 
   if (!isVisible) return null;
