@@ -13,38 +13,14 @@ import UniversityDashboard from "./components/UniversityDashboard";
 import AdminDashboard from "./components/AdminDashboard";
 import AboutUs from "./components/AboutUs";
 import CollegeContainer from "./containers/CollegeContainer.tsx";
-import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
+import { ThemeProvider } from "./contexts/ThemeContext";
 import CursorShadow from "./components/CursorShadow";
 import FilterForm from "./components/filterFrame.tsx";
-import { useState } from "react";
 import type { collegeDisplay } from "./components/collegeCards.tsx";
 import Info from './components/Info';
 
-function HomePage() {
-  const { mode } = useThemeMode();
-
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr",
-        gap: "16px",
-        padding: "16px",
-        backgroundColor: mode === "dark" ? "transparent" : "#ffffff",
-        minHeight: "calc(100vh - 200px)",
-        transition: "background-color 0.3s ease",
-      }}
-    >
-      <FilterForm />
-      <CollegeContainer />
-      <Map />
-    </div>
-  );
-}
-
 function App() {
-  const links = ["CLEP Search", "About Us"];
-  const [colleges, setColleges] = useState<collegeDisplay[]>([]);
+  const links = ["CLEP Search", "About Us", "Info"];
 
   return (
     <ThemeProvider>
@@ -59,6 +35,7 @@ function App() {
           />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/about us" element={<AboutUs />} />
+          <Route path="/info" element={<Info />} />
           <Route
             path="/"
             element={
