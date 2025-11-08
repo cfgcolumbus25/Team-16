@@ -13,7 +13,7 @@ import Login from './components/login';
 import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
-import CollegeContainer from "./containers/collegeContainer.tsx";
+import CollegeContainer from "./containers/CollegeContainer.tsx";
 import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
 import CursorShadow from './components/CursorShadow';
 import FilterForm from "./components/filterFrame.tsx";

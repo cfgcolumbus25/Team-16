@@ -33,3 +33,7 @@ The application includes the following main navigation items:
 - **CLEP Search**: Search and filter colleges by CLEP acceptance policies
 - **Recent Events**: View recent updates and events
 - **About Us**: Learn about Modern States and our project mission
+
+## Tech Stack
+
+Used React + Supabase in order to make full-stack application. Team 16 @ Code for Good
