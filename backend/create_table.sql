@@ -1,8 +1,7 @@
-CREATE TABLE universities (
+CREATE TABLE Universities (
     uni_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     name VARCHAR(150) NOT NULL,   
-    city VARCHAR(100) NOT NULL,   
-    zip VARCHAR(20) NOT NULL,
+    state VARCHAR(2) NOT NULL,   
     cost VARCHAR(20) NOT NULL,
     acceptance_rate VARCHAR(10) NOT NULL
 );
@@ -12,7 +11,7 @@ CREATE TABLE ClepExam (
     clep_exam_name TEXT NOT NULL
 );
 
-CREATE TABLE UniversityClep (
+CREATE TABLE clep_policies (
     uni_clep_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     course_names TEXT NOT NULL,
     course_cutoff_score INT,

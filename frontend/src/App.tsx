@@ -16,6 +16,7 @@ import AboutUs from './components/AboutUs';
 import CollegeContainer from "./containers/collegeContainer.tsx";
 import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
 import CursorShadow from './components/CursorShadow';
+import FilterForm from "./components/filterFrame.tsx";
 
 function HomePage() {
   const { mode } = useThemeMode();
@@ -32,6 +33,7 @@ function HomePage() {
         transition: 'background-color 0.3s ease',
       }}
     >
+      <FilterForm/>
       <CollegeContainer />
       <Map />
     </div>
