@@ -61,7 +61,7 @@ import {
                   color: 'white',
                 }}
                 component={RouterLink}
-                to="/vote"
+                to="/"
               >
                 <Box
                   component="img"
@@ -128,7 +128,7 @@ import {
                   justifyContent: 'flex-start',
                 }}
                 component={RouterLink}
-                to="/vote"
+                to="/"
               >
                 <Box
                   component="img"
