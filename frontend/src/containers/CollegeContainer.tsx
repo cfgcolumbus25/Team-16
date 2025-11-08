@@ -1,7 +1,10 @@
 import { useState } from "react";
 import CollegeCards from "../components/collegeCards";
+import { useThemeMode } from "../contexts/ThemeContext";
 
 const CollegeContainer = () => {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCost, setfilterCost] = useState("All");
   const [filterAcceptance, setfilterAcceptance] = useState("All");
@@ -17,7 +20,7 @@ const CollegeContainer = () => {
       location: "Ithaca",
       cost: 100000,
       acceptanceRate: 10,
-      clepAccept: 1,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 18, // new field
       lastUpdated: new Date("2025-09-01"), // new field
@@ -42,7 +45,7 @@ const CollegeContainer = () => {
       location: "Ohio",
       cost: 50000,
       acceptanceRate: 5,
-      clepAccept: 5,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 20,
       lastUpdated: new Date("2025-08-15"),
@@ -73,7 +76,7 @@ const CollegeContainer = () => {
       location: "Maryland",
       cost: 50000,
       acceptanceRate: 10,
-      clepAccept: 5,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 19,
       lastUpdated: new Date("2025-07-10"),
@@ -98,8 +101,8 @@ const CollegeContainer = () => {
       location: "Los Angeles",
       cost: 60000,
       acceptanceRate: 8,
-      clepAccept: 7,
-      amountOfStudentClepScores: 30,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
       creditLimit: 21,
       lastUpdated: new Date("2025-09-05"),
       clepExams: [
@@ -129,8 +132,8 @@ const CollegeContainer = () => {
       location: "Gainesville",
       cost: 48000,
       acceptanceRate: 9,
-      clepAccept: 8,
-      amountOfStudentClepScores: 25,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
       creditLimit: 20,
       lastUpdated: new Date("2025-08-20"),
       clepExams: [
@@ -149,6 +152,10 @@ const CollegeContainer = () => {
       ],
     },
   ];
+
+  colleges.forEach((college) => {
+    college.clepAccept = college.clepExams.length;
+  });
 
   colleges.sort((a, b) => b.clepAccept - a.clepAccept);
 
@@ -191,15 +198,25 @@ const CollegeContainer = () => {
         placeholder="Search College Name..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="flex-1 px-3 py-2 border border-gray-300 text-sm bg-white rounded-3xl w-full"
+        className={`flex-1 px-3 py-2 border text-sm rounded-3xl w-full ${
+          isDark
+            ? 'bg-slate-700 border-blue-600 text-blue-50 placeholder-blue-300'
+            : 'bg-white border-gray-300'
+        }`}
       />
       <div className="mb-4 p-1 rounded-lg w-full">
         <div className="flex gap-4 w-full">
           {/* Cost Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Filter Cost:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Filter Cost:</p>
             <select
-              className="border p-1 rounded w-full border-gray-300"
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
               value={filterCost}
               onChange={(e) => setfilterCost(e.target.value)}
             >
@@ -213,9 +230,15 @@ const CollegeContainer = () => {
 
           {/* Acceptance Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Acceptance:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Acceptance:</p>
             <select
-              className="border p-1 rounded w-full border-gray-300"
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
               value={filterAcceptance}
               onChange={(e) => setfilterAcceptance(e.target.value)}
             >
@@ -229,9 +252,15 @@ const CollegeContainer = () => {
 
           {/* Credit Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Credit:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Credit:</p>
             <select
-              className="border p-1 rounded w-full border-gray-300"
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
               value={filterCredit}
               onChange={(e) => setfilterCredit(e.target.value)}
             >

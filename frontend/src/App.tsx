@@ -14,12 +14,38 @@ import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
 import CollegeContainer from "./containers/collegeContainer.tsx";
+import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
+import CursorShadow from './components/CursorShadow';
+import FilterForm from "./components/filterFrame.tsx";
+
+function HomePage() {
+  const { mode } = useThemeMode();
+  
+  return (
+    <div 
+      style={{ 
+        display: 'grid', 
+        gridTemplateColumns: '1fr 1fr', 
+        gap: '16px', 
+        padding: '16px',
+        backgroundColor: mode === 'dark' ? 'transparent' : '#ffffff',
+        minHeight: 'calc(100vh - 200px)',
+        transition: 'background-color 0.3s ease',
+      }}
+    >
+      <FilterForm/>
+      <CollegeContainer />
+      <Map />
+    </div>
+  );
+}
 
 function App() {
   const links = ["CLEP Search", "Recent Events", "About Us"];
 
   return (
-    <>
+    <ThemeProvider>
+      <CursorShadow />
       <Router>
         <NavBar links={links} />
         <Routes>
@@ -27,21 +53,11 @@ function App() {
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="/about us" element={<AboutUs />} />
-          <Route path="/" element={
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: '1fr 1fr', 
-              gap: '16px', 
-              padding: '16px' 
-            }}>
-              <CollegeContainer />
-              <Map />
-            </div>
-          } />
+          <Route path="/" element={<HomePage />} />
         </Routes>
         <Footer />
-      </Router>                                                                                                                                                             
-    </>
+      </Router>
+    </ThemeProvider>
   );
 }
 
