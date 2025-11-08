@@ -15,6 +15,7 @@ import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
 import CollegeContainer from "./containers/collegeContainer.tsx";
 import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
+import CursorShadow from './components/CursorShadow';
 
 function HomePage() {
   const { mode } = useThemeMode();
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <ThemeProvider>
+      <CursorShadow />
       <Router>
         <NavBar links={links} />
         <Routes>
