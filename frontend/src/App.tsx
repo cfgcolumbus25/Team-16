@@ -10,10 +10,10 @@ import {
 import "./App.css";
 import Map from './components/Map.tsx';
 import Login from './components/login';
-import CollegeContainer from "./containers/CollegeContainer.tsx";
 import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
+import CollegeContainer from "./containers/collegeContainer.tsx";
 
 function App() {
   const links = ["CLEP Search", "Recent Events", "About Us"];

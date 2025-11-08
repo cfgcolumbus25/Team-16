@@ -4,7 +4,6 @@ const Footer = () => {
       backgroundImage: 'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
       color: 'inherit',
       padding: '30px 20px',
-      marginTop: '40px'
     }}>
       <div style={{ 
         maxWidth: '1200px', 
@@ -13,9 +12,8 @@ const Footer = () => {
         justifyContent: 'space-between',
         alignItems: 'center',
         flexWrap: 'wrap',
-        gap: '20px'
       }}>
-        <div style={{ fontSize: '18px', fontWeight: '500' }}>
+        <div style={{ fontSize: '15px', fontWeight: '500' }}>
           CLEP College Finder
         </div>
         
@@ -38,7 +36,7 @@ const Footer = () => {
           </a>
         </div>
 
-        <div style={{ fontSize: '14px', opacity: 0.9 }}>
+        <div style={{ fontSize: '15px'}}>
           © 2025 Team 16
         </div>
       </div>
