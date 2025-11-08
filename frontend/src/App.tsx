@@ -1,5 +1,6 @@
 
 import NavBar from "./components/navbar";
+import Footer from "./components/Footer";
 import {
   HashRouter as Router,
   Routes,
@@ -32,18 +33,7 @@ function App() {
             </div>
           } />
         </Routes>
-        <footer style={{
-          backgroundColor: '#1f2937',
-          color: 'white',
-          padding: '20px',
-          textAlign: 'center',
-          marginTop: '20px'
-        }}>
-          <p style={{ margin: '5px 0' }}>© 2025 CLEP College Finder</p>
-          <p style={{ margin: '5px 0', fontSize: '14px' }}>
-            Find colleges that accept CLEP scores near you
-          </p>
-        </footer>
+        <Footer />
       </Router>
     </>
   );
