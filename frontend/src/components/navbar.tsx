@@ -153,6 +153,7 @@ import {
                         component={RouterLink}
                         to={path}
                         value={path}
+                        sx={{ color: 'black' }}
                       />
                     );
                   })}
