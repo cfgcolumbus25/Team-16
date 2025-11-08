@@ -22,9 +22,9 @@ CREATE TABLE Clep_Policies (
     clep_id UUID REFERENCES ClepExam(clep_id) NOT NULL
 );
 
-CREATE TABLE Reviews {
+CREATE TABLE Reviews (
     review_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     uni_clep_id UUID REFRENCES Clep_policies(uni_clep_id) NOT NULL,
     good_experience BOOLEAN NOT NULL,
     submitted_at TIMESTAMP DEFAULT NOW()
-}
+)
