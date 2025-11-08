@@ -6,7 +6,7 @@ reviews_bp = Blueprint('reviews', __name__)
 
 REQUIRED_FIELDS = {
     "uni_clep_id": str,
-    "good_experince": bool,
+    "good_experience": bool,
     "submitted_at": datetime,
 }
 
