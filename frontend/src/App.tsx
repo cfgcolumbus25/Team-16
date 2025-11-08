@@ -8,9 +8,9 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import "./App.css";
-import CollegeContainer from "./containers/CollegeContainer";
 import Map from './components/Map.tsx';
 import Login from './components/login';
+import CollegeContainer from "./containers/collegeContainer.tsx";
 import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 
@@ -38,8 +38,7 @@ function App() {
           } />
         </Routes>
         <Footer />
-      </Router>
-      <CollegeContainer />                                                                                                                                                              
+      </Router>                                                                                                                                                             
     </>
   );
 }
