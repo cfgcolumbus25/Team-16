@@ -58,6 +58,31 @@ def put_clep_policies(uuid):
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+@clep_policies_bp.route("/clep_policies/<uuid>", methods=["DELETE"])
+def delete_clep_policy(uuid):
+    try:
+        # Attempt to delete the row with the matching UUID
+        res = supabase.table("clep_policies").delete().eq("uni_clep_id", uuid).execute()
+
+        # If nothing was deleted, return a 404
+        if not res.data:
+            return jsonify({
+                "success": False,
+                "message": f"No CLEP policy found with uni_clep_id: {uuid}"
+            }), 404
+
+        return jsonify({
+            "success": True,
+            "message": f"CLEP policy with uni_clep_id {uuid} deleted successfully",
+            "deleted": res.data
+        }), 200
+
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+    
 @clep_policies_bp.route('/clep_policies/filter', methods=['POST'])
 def get_clep_policies_filtered():
     payload = request.json or {}
@@ -77,7 +102,7 @@ def get_clep_policies_filtered():
         if in_state:
             universities = supabase.table("institutions").select("*").eq("state", state).execute().data
         else:
-            universities = supabase.table("institutions").select("*").execute().data
+            universities = supabase.table("institutions").select("*").neq("state", state).execute().data
 
         if not universities:
             return jsonify({"message": "No universities found"}), 404
@@ -130,3 +155,4 @@ def get_clep_policies_filtered():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
