@@ -16,7 +16,7 @@ REQUIRED_FIELDS = {
 @uni_clep_bp.route("/", methods=["GET"])
 def get_all_uni_clep():
     try:
-        data = supabase.table("UniversityClep").select("*").execute()
+        data = supabase.table("universityclep").select("*").execute()
         return jsonify(data.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -37,7 +37,7 @@ def add_uni_clep():
         return jsonify({"error": "Invalid field types", "invalid": wrong_types}), 400
 
     try:
-        res = supabase.table("UniversityClep").insert(payload).execute()
+        res = supabase.table("universityclep").insert(payload).execute()
         return jsonify(res.data), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -48,8 +48,8 @@ def update_uni_clep(uuid):
     payload = request.json or {}
 
     try:
-        payload["last_updated"] = "now()"  # optional timestamp update
-        res = supabase.table("UniversityClep").update(payload).eq("uni_clep_id", uuid).execute()
+        payload["last_updated"] = "now()"
+        res = supabase.table("universityclep").update(payload).eq("uni_clep_id", uuid).execute()
         return jsonify(res.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500

@@ -12,7 +12,7 @@ REQUIRED_FIELDS = {
 @clep_bp.route("/", methods=["GET"])
 def get_all_clep():
     try:
-        data = supabase.table("ClepExam").select("*").execute()
+        data = supabase.table("clepexam").select("*").execute()
         return jsonify(data.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -33,7 +33,7 @@ def add_clep():
         return jsonify({"error": "Invalid field types", "invalid": wrong_types}), 400
 
     try:
-        res = supabase.table("ClepExam").insert(payload).execute()
+        res = supabase.table("clepexam").insert(payload).execute()
         return jsonify(res.data), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
