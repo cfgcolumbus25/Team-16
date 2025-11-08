@@ -88,11 +88,36 @@ const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
   return null;
 };
 
+// Map focus component to change view
+interface MapFocusProps {
+  center: LatLngExpression;
+  zoom: number;
+}
+
+const MapFocus = ({ center, zoom }: MapFocusProps) => {
+  const map = useMap();
+  
+  useEffect(() => {
+    map.setView(center, zoom);
+  }, [map, center, zoom]);
+  
+  return null;
+};
+
+// State center coordinates and zoom levels
+const stateCenters: { [key: string]: { center: LatLngExpression, zoom: number } } = {
+  'All': { center: [40.5, -78.0], zoom: 5 },
+  'New York': { center: [42.4440, -76.5019], zoom: 8 },
+  'Ohio': { center: [40.4173, -82.9071], zoom: 7 },
+  'Maryland': { center: [38.9897, -76.9378], zoom: 8 },
+};
+
 const Map = () => {
   const [selectedColleges, setSelectedColleges] = useState<number[]>([]);
   const [currentLocation, setCurrentLocation] = useState<LatLngExpression | null>(null);
   const [useCurrentLocation, setUseCurrentLocation] = useState(false);
   const [locationError, setLocationError] = useState<string | null>(null);
+  const [focusedState, setFocusedState] = useState<string>('All');
   
   // Get user's current location
   const getCurrentLocation = () => {
@@ -145,6 +170,18 @@ const Map = () => {
     },
   ];
 
+  // Map locations to states
+  const locationToState: { [key: string]: string } = {
+    'Ithaca': 'New York',
+    'Ohio': 'Ohio',
+    'Maryland': 'Maryland',
+  };
+
+  // Filter colleges based on focused state
+  const filteredColleges = focusedState === 'All' 
+    ? colleges 
+    : colleges.filter(college => locationToState[college.location] === focusedState);
+
   const centerPosition: LatLngExpression = [40.5, -78.0]; // Center of the three locations
 
   const handleCollegeSelect = (collegeId: number) => {
@@ -180,6 +217,7 @@ const Map = () => {
   };
 
   const routePoints = getRoutePoints();
+  const currentStateView = stateCenters[focusedState] || stateCenters['All'];
 
   return (
     <div style={{ height: '100vh', width: '100%', position: 'relative' }}>
@@ -195,6 +233,29 @@ const Map = () => {
         boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
         maxWidth: '250px'
       }}>
+        {/* State Filter */}
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
+          <label style={{ fontSize: '13px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
+            Focus on State:
+          </label>
+          <select 
+            value={focusedState}
+            onChange={(e) => setFocusedState(e.target.value)}
+            style={{
+              width: '100%',
+              padding: '8px',
+              borderRadius: '4px',
+              border: '1px solid #d1d5db',
+              fontSize: '13px',
+              cursor: 'pointer'
+            }}
+          >
+            <option value="All">All States</option>
+            <option value="New York">New York</option>
+            <option value="Ohio">Ohio</option>
+            <option value="Maryland">Maryland</option>
+          </select>
+        </div>
         {/* Current Location Toggle */}
         <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
           <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
@@ -230,7 +291,7 @@ const Map = () => {
           {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
         </h3>
 
-        {colleges.map(college => (
+        {filteredColleges.map(college => (
           <div key={college.id} style={{ marginBottom: '5px' }}>
             <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px' }}>
               <input
@@ -278,6 +339,7 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         />
+        <MapFocus center={currentStateView.center} zoom={currentStateView.zoom} />
         {currentLocation && useCurrentLocation && (
           <Marker position={currentLocation} icon={createColoredIcon('violet')}>
             <Popup>
@@ -285,7 +347,7 @@ const Map = () => {
             </Popup>
           </Marker>
         )}
-        {colleges.map((college) => {
+        {filteredColleges.map((college) => {
           const position = locationCoordinates[college.location];
           const color = locationColors[college.location] || 'blue';
           if (!position) return null;
