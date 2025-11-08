@@ -41,7 +41,7 @@ function HomePage() {
 }
 
 function App() {
-  const links = ["CLEP Search", "Recent Events", "About Us"];
+  const links = ["CLEP Search", "About Us"];
 
   return (
     <ThemeProvider>

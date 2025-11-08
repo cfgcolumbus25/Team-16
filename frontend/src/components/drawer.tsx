@@ -18,10 +18,12 @@ interface DrawerCompProps {
 
 export default function DrawerComp({ links }: DrawerCompProps) {
   const [open, setOpen] = useState(false);
-  const { mode } = useThemeMode();
-
-  // Type helper function
-  const getPath = (link: string): string => `/${link.toLowerCase()}`;
+  const getPath = (link: string): string => {
+    if (link.toLowerCase() === 'clep search') {
+      return '/';
+    }
+    return `/${link.toLowerCase()}`;
+  };
 
   return (
     <>
@@ -48,20 +50,13 @@ export default function DrawerComp({ links }: DrawerCompProps) {
             padding: 2,
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{ 
-              color: mode === 'dark' ? '#e8f0f8' : 'black', 
-              marginBottom: 2,
-              transition: 'color 0.3s ease',
-            }}
-          >
+          <Typography variant="h6" sx={{ color: 'black', marginBottom: 2 }}>
             Modern States
           </Typography>
 
           <List>
             {links.map((link, index) => {
-              const path = getPath(link);
+              const path = getPath(link); // This will now be '/' for 'CLEP Search'
               return (
                 <ListItemButton
                   key={index}
