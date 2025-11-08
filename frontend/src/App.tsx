@@ -6,6 +6,8 @@ import {
 } from "react-router-dom";
 import "./App.css";
 import CollegeContainer from "./containers/CollegeContainer";
+import { SimpleGrid } from "@chakra-ui/react";
+import Map from './components/Map.tsx';
 
 function App() {
   const links = ["CLEP Search", "Recent Events"];
@@ -17,7 +19,10 @@ function App() {
         <p className="text-blue-50">Hello</p>
         <Routes></Routes>
       </Router>
-      <CollegeContainer />
+      <SimpleGrid columns={2} gap={4} padding={4}>
+        <CollegeContainer />
+        <Map />
+      </SimpleGrid>
     </>
   );
 }
