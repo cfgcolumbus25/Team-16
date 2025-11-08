@@ -46,7 +46,7 @@ export default function DrawerComp({ links }: DrawerCompProps) {
         >
           <Typography
             variant="h6"
-            sx={{ color: 'white', marginBottom: 2 }}
+            sx={{ color: 'black', marginBottom: 2 }}
           >
             Modern States
           </Typography>
@@ -62,7 +62,7 @@ export default function DrawerComp({ links }: DrawerCompProps) {
                   onClick={() => setOpen(false)}
                 >
                   <ListItemText
-                    sx={{ color: 'white', textAlign: 'center' }}
+                    sx={{ color: 'black', textAlign: 'center' }}
                     primary={link}
                   />
                 </ListItemButton>
@@ -77,7 +77,7 @@ export default function DrawerComp({ links }: DrawerCompProps) {
         onClick={() => setOpen(!open)}
         sx={{
           marginLeft: 'auto',
-          color: 'white',
+          color: 'black',
           '&:hover': { backgroundColor: 'rgba(0, 0, 0, 0.2)' },
         }}
       >
