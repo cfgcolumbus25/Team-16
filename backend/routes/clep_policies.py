@@ -1,5 +1,7 @@
+import datetime
 from flask import Blueprint, request, jsonify
 from config.supabase import supabase
+from datetime import datetime, timedelta, timezone
 
 clep_policies_bp = Blueprint('clep_policies', __name__)
 
@@ -83,6 +85,9 @@ def delete_clep_policy(uuid):
             "error": str(e)
         }), 500
     
+
+one_year_ago = datetime.now() - timedelta(days=365)
+
 @clep_policies_bp.route('/clep_policies/filter', methods=['POST'])
 def get_clep_policies_filtered():
     payload = request.json or {}
@@ -91,6 +96,10 @@ def get_clep_policies_filtered():
     user_location = payload.get("userLocation", "")
     clep_exams_taken = payload.get("clepExamsTaken", [])
     in_state = payload.get("inState", False)
+
+    # --- Added timezone-aware date setup ---
+    now = datetime.now(timezone.utc)
+    one_year_ago = now - timedelta(days=365)
 
     # Defensive checks
     if not user_location or ", " not in user_location:
@@ -109,6 +118,8 @@ def get_clep_policies_filtered():
 
         clep_records = supabase.table("clep_policies").select("*").execute().data
         clep_exams = supabase.table("clep_exams").select("*").execute().data
+        # --- Fetched all reviews ---
+        all_reviews = supabase.table("reviews").select("uni_clep_id, good_experince, submitted_at").execute().data
 
         # Create lookup for CLEP exam names
         clep_name_map = {c["clep_id"]: c["clep_exam_name"].lower() for c in clep_exams}
@@ -134,6 +145,66 @@ def get_clep_policies_filtered():
                     best_policy = max(qualifying, key=lambda p: p["course_cutoff_score"])
                     clep_name = clep_name_map.get(best_policy["clep_id"], "").lower()
 
+                    # --- New Logic: Determine if policy is up-to-date AND count reviews ---
+                    last_updated_str = best_policy.get("last_updated")
+                    policy_id = best_policy.get("uni_clep_id") # Get the policy's unique ID
+                    
+                    last_updated_dt = None
+                    is_up_to_date = True
+
+                    if last_updated_str:
+                        try:
+                            # Parse the ISO format string
+                            if last_updated_str.endswith('Z'):
+                                last_updated_dt = datetime.fromisoformat(last_updated_str.replace('Z', '+00:00'))
+                            else:
+                                last_updated_dt = datetime.fromisoformat(last_updated_str)
+                            
+                            # Ensure it's timezone-aware (assume UTC if naive)
+                            if last_updated_dt.tzinfo is None:
+                                last_updated_dt = last_updated_dt.replace(tzinfo=timezone.utc)
+
+                            is_up_to_date = last_updated_dt >= one_year_ago
+                        except (ValueError, TypeError):
+                             is_up_to_date = True # Default if parsing fails
+                             last_updated_dt = None # Ensure it's None if parsing failed
+
+                    # --- New Review Counting Logic ---
+                    good_reviews = 0
+                    bad_reviews = 0
+
+                    # Only count reviews if we have a policy ID and a valid last_updated date
+                    if policy_id and last_updated_dt:
+                        # Filter reviews for this specific policy
+                        relevant_reviews = [r for r in all_reviews if r.get("uni_clep_id") == policy_id]
+
+                        for review in relevant_reviews:
+                            try:
+                                submitted_at_str = review.get("submitted_at")
+                                if not submitted_at_str:
+                                    continue # Skip review if it has no submission date
+
+                                # Parse review submission date
+                                if submitted_at_str.endswith('Z'):
+                                    submitted_at_dt = datetime.fromisoformat(submitted_at_str.replace('Z', '+00:00'))
+                                else:
+                                    submitted_at_dt = datetime.fromisoformat(submitted_at_str)
+                                
+                                # Ensure it's timezone-aware (assume UTC if naive)
+                                if submitted_at_dt.tzinfo is None:
+                                    submitted_at_dt = submitted_at_dt.replace(tzinfo=timezone.utc)
+                                
+                                # Count review ONLY if it was submitted AFTER the policy update
+                                if submitted_at_dt > last_updated_dt:
+                                    if review.get("good_experince"): # Use .get() for safety
+                                        good_reviews += 1
+                                    else:
+                                        bad_reviews += 1
+                            
+                            except (ValueError, TypeError):
+                                # Skip this review if its date is malformed
+                                continue
+
                     # 2. If this is the first match for this uni, add the whole uni object
                     if uni_id not in matched_universities:
                         matched_universities[uni_id] = uni.copy() # Add the full university details
@@ -146,7 +217,10 @@ def get_clep_policies_filtered():
                         "credits_awarded": best_policy["course_credits"],
                         "clep_exam": clep_name,
                         "required_score": best_policy["course_cutoff_score"],
-                        "user_score": score
+                        "user_score": score,
+                        "up_to_date": is_up_to_date,
+                        "good_reviews": good_reviews,
+                        "bad_reviews": bad_reviews 
                     })
         
         # 5. Convert the dictionary of universities back into a list
