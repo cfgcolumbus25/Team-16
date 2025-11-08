@@ -275,7 +275,7 @@ const Map = () => {
       {/* College Selection Panel - Top Left */}
       <div style={{ 
         position: 'absolute', 
-        top: '80px', 
+        top: '10px', 
         left: '10px', 
         zIndex: 1000, 
         backgroundColor: 'white', 
