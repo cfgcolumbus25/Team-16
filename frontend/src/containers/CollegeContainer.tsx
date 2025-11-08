@@ -1,7 +1,10 @@
 import { useState } from "react";
 import CollegeCards from "../components/collegeCards";
+import { useThemeMode } from "../contexts/ThemeContext";
 
 const CollegeContainer = () => {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCost, setfilterCost] = useState("All");
   const [filterAcceptance, setfilterAcceptance] = useState("All");
@@ -195,15 +198,29 @@ const CollegeContainer = () => {
         placeholder="Search College Name..."
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        className="flex-1 px-3 py-2 border border-gray-300 text-sm bg-white rounded-3xl w-full"
+        className={`flex-1 px-3 py-2 border text-sm rounded-3xl w-full ${
+          isDark
+            ? 'bg-slate-700 border-blue-600 text-blue-50 placeholder-blue-300'
+            : 'bg-white border-gray-300'
+        }`}
       />
       <div className="mb-4 p-1 rounded-lg w-full">
         <div className="flex gap-4 w-full">
           {/* Cost Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Filter Cost:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Filter Cost:</p>
             <select
+<<<<<<< Updated upstream
               className="border p-1 rounded w-full border-gray-300"
+=======
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
+>>>>>>> Stashed changes
               value={filterCost}
               onChange={(e) => setfilterCost(e.target.value)}
             >
@@ -217,9 +234,19 @@ const CollegeContainer = () => {
 
           {/* Acceptance Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Acceptance:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Acceptance:</p>
             <select
+<<<<<<< Updated upstream
               className="border p-1 rounded w-full border-gray-300"
+=======
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
+>>>>>>> Stashed changes
               value={filterAcceptance}
               onChange={(e) => setfilterAcceptance(e.target.value)}
             >
@@ -233,9 +260,19 @@ const CollegeContainer = () => {
 
           {/* Credit Filter */}
           <div className="flex flex-col flex-1">
-            <p className="text-xs">Credit:</p>
+            <p className={`text-xs ${
+              isDark ? 'text-blue-200' : ''
+            }`}>Credit:</p>
             <select
+<<<<<<< Updated upstream
               className="border p-1 rounded w-full border-gray-300"
+=======
+              className={`border p-1 rounded w-full ${
+                isDark
+                  ? 'bg-slate-700 border-blue-600 text-blue-50'
+                  : 'bg-white border-gray-300'
+              }`}
+>>>>>>> Stashed changes
               value={filterCredit}
               onChange={(e) => setfilterCredit(e.target.value)}
             >
