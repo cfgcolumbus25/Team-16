@@ -19,7 +19,7 @@ def get_reviews():
         return jsonify({"error": str(e)}), 500
     
 @reviews_bp.route('/reviews', methods=['POST'])
-def add_institution():
+def add_review():
     payload = request.json or {}
 
     missing = [f for f in REQUIRED_FIELDS if f not in payload]
@@ -37,7 +37,7 @@ def add_institution():
         return jsonify({"error": str(e)}), 500
     
 @reviews_bp.route('/reviews/<review_id>', methods=['PUT'])
-def update_institution(review_id):
+def update_review(review_id):
     payload = request.json or {}
     updates = {k: v for k, v in payload.items() if k in REQUIRED_FIELDS}
 
@@ -47,5 +47,13 @@ def update_institution(review_id):
     try:
         res = supabase.table("reviews").update(updates).eq("review_id", review_id).execute()
         return jsonify(res.data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+@reviews_bp.route('/reviews/<review_id>', methods=['DELETE'])
+def delete_review(review_id):
+    try:
+        res = supabase.table("reviews").delete().eq("review_id", review_id).execute()
+        return jsonify({"deleted": len(res.data)}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
