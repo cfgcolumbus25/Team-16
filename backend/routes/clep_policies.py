@@ -1,5 +1,7 @@
+import datetime
 from flask import Blueprint, request, jsonify
 from config.supabase import supabase
+from datetime import datetime, timedelta
 
 clep_policies_bp = Blueprint('clep_policies', __name__)
 
@@ -83,6 +85,9 @@ def delete_clep_policy(uuid):
             "error": str(e)
         }), 500
     
+
+one_year_ago = datetime.now() - timedelta(days=365)
+
 @clep_policies_bp.route('/clep_policies/filter', methods=['POST'])
 def get_clep_policies_filtered():
     payload = request.json or {}
@@ -134,6 +139,21 @@ def get_clep_policies_filtered():
                     best_policy = max(qualifying, key=lambda p: p["course_cutoff_score"])
                     clep_name = clep_name_map.get(best_policy["clep_id"], "").lower()
 
+                    # --- New Logic: Determine if policy is up-to-date ---
+                    # The last_updated field is assumed to be a string in ISO format (e.g., from Supabase)
+                    last_updated_str = best_policy.get("last_updated")
+                    is_up_to_date = True
+                    if last_updated_str:
+                        # Convert the string to a datetime object
+                        # You might need to adjust the parsing format based on your DB (e.g., .fromisoformat(last_updated_str))
+                        # Assuming 'last_updated' is a standard ISO format string (e.g., '2024-01-01T10:00:00.000Z')
+                        try:
+                            last_updated_dt = datetime.fromisoformat(last_updated_str.replace('Z', '+00:00'))
+                            is_up_to_date = last_updated_dt >= one_year_ago
+                        except ValueError:
+                             # Handle cases where the date string is malformed or not present, default to True or handle error
+                             is_up_to_date = True # default to True if we can't parse it
+
                     # 2. If this is the first match for this uni, add the whole uni object
                     if uni_id not in matched_universities:
                         matched_universities[uni_id] = uni.copy() # Add the full university details
@@ -146,7 +166,8 @@ def get_clep_policies_filtered():
                         "credits_awarded": best_policy["course_credits"],
                         "clep_exam": clep_name,
                         "required_score": best_policy["course_cutoff_score"],
-                        "user_score": score
+                        "user_score": score,
+                        "up_to_date": is_up_to_date
                     })
         
         # 5. Convert the dictionary of universities back into a list
