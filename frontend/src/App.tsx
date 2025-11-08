@@ -13,9 +13,10 @@ import Login from './components/login';
 import CollegeContainer from "./containers/collegeContainer.tsx";
 import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
+import AboutUs from './components/AboutUs';
 
 function App() {
-  const links = ["CLEP Search", "Recent Events"];
+  const links = ["CLEP Search", "Recent Events", "About Us"];
 
   return (
     <>
@@ -25,6 +26,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
           <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/about us" element={<AboutUs />} />
           <Route path="/" element={
             <div style={{ 
               display: 'grid', 
