@@ -255,19 +255,28 @@ const Map = () => {
     },
   ];
 
-  // Map locations to states (no longer needed since we use state names directly now)
+  // Map locations to states
   const locationToState: { [key: string]: string } = {
+    'Ithaca': 'New York',
     'New York': 'New York',
-    'Ohio': 'Ohio',
     'Maryland': 'Maryland',
     'California': 'California',
     'Florida': 'Florida',
+    // Ohio city locations
+    'Columbus, Ohio': 'Ohio',
+    'Cincinnati, Ohio': 'Ohio',
+    'Kent, Ohio': 'Ohio',
+    'Bowling Green, Ohio': 'Ohio',
   };
 
   // Filter colleges based on focused state
   const filteredColleges = focusedState === 'All' 
     ? colleges 
-    : colleges.filter(college => locationToState[college.location] === focusedState);
+    : colleges.filter(college => {
+        const state = locationToState[college.location];
+        console.log(`College: ${college.collegeName}, Location: ${college.location}, Maps to state: ${state}, Focused: ${focusedState}, Match: ${state === focusedState}`);
+        return state === focusedState;
+      });
 
   const centerPosition: LatLngExpression = [38.0, -95.0]; // Center of USA to show all colleges
 
@@ -425,6 +434,11 @@ const Map = () => {
         <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: isDark ? '#e8f0f8' : '#000000' }}>
           {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
         </h3>
+        
+        {/* Debug info */}
+        <div style={{ fontSize: '10px', color: '#666', marginBottom: '8px', padding: '4px', backgroundColor: '#f0f0f0', borderRadius: '3px' }}>
+          Showing {filteredColleges.length} of {colleges.length} colleges
+        </div>
 
         {filteredColleges.map(college => (
           <div key={college.id} style={{ marginBottom: '5px' }}>
