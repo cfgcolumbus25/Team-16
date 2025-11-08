@@ -124,7 +124,7 @@ def get_clep_policies_filtered():
         # Create lookup for CLEP exam names
         clep_name_map = {c["clep_id"]: c["clep_exam_name"].lower() for c in clep_exams}
 
-        # 1. Use a dictionary to group results by university ID
+        # Use a dictionary to group results by university ID
         matched_universities = {}
 
         for uni in universities:
@@ -145,7 +145,6 @@ def get_clep_policies_filtered():
                     best_policy = max(qualifying, key=lambda p: p["course_cutoff_score"])
                     clep_name = clep_name_map.get(best_policy["clep_id"], "").lower()
 
-                    # --- New Logic: Determine if policy is up-to-date AND count reviews ---
                     last_updated_str = best_policy.get("last_updated")
                     policy_id = best_policy.get("uni_clep_id") # Get the policy's unique ID
                     
@@ -169,7 +168,6 @@ def get_clep_policies_filtered():
                              is_up_to_date = True # Default if parsing fails
                              last_updated_dt = None # Ensure it's None if parsing failed
 
-                    # --- New Review Counting Logic ---
                     good_reviews = 0
                     bad_reviews = 0
 
@@ -205,13 +203,13 @@ def get_clep_policies_filtered():
                                 # Skip this review if its date is malformed
                                 continue
 
-                    # 2. If this is the first match for this uni, add the whole uni object
+                    # If this is the first match for this uni, add the whole uni object
                     if uni_id not in matched_universities:
                         matched_universities[uni_id] = uni.copy() # Add the full university details
-                        # 3. Add a new key to hold the policies that matched
+                        # Add a new key to hold the policies that matched
                         matched_universities[uni_id]["matching_clep_exams"] = []
 
-                    # 4. Append the specific matching policy details
+                    # Append the specific matching policy details
                     matched_universities[uni_id]["matching_clep_exams"].append({
                         "course": best_policy["course_names"],
                         "credits_awarded": best_policy["course_credits"],
@@ -223,13 +221,13 @@ def get_clep_policies_filtered():
                         "bad_reviews": bad_reviews 
                     })
         
-        # 5. Convert the dictionary of universities back into a list
+        # Convert the dictionary of universities back into a list
         final_results = list(matched_universities.values())
 
         if not final_results:
             return jsonify({"message": "No matching CLEP policies found"}), 404
 
-        # 6. Return the new, nested list
+        # Return the new, nested list
         return jsonify(final_results), 200
 
     except Exception as e:
