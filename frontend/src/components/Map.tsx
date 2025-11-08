@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import L from 'leaflet';
@@ -48,7 +49,33 @@ const locationColors: { [key: string]: string } = {
   'Maryland': 'green',
 };
 
+
 const Map = () => {
+  const [selectedColleges, setSelectedColleges] = useState<number[]>([]);
+  const [currentLocation, setCurrentLocation] = useState<LatLngExpression | null>(null);
+  const [useCurrentLocation, setUseCurrentLocation] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
+  
+  // Get user's current location
+  const getCurrentLocation = () => {
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentLocation([latitude, longitude]);
+          setUseCurrentLocation(true);
+          setLocationError(null);
+        },
+        (error) => {
+          setLocationError('Unable to get location: ' + error.message);
+          setUseCurrentLocation(false);
+        }
+      );
+    } else {
+      setLocationError('Geolocation not supported');
+    }
+  };
+  
   // Hardcoded colleges data - matches CollegeContainer
   const colleges: College[] = [
     {
@@ -80,13 +107,111 @@ const Map = () => {
     },
   ];
 
-  const centerPosition: LatLngExpression = [40.0, -80.0]; // Center of the three locations
+  const centerPosition: LatLngExpression = [40.5, -78.0]; // Center of the three locations
+
+  const handleCollegeSelect = (collegeId: number) => {
+    setSelectedColleges(prev => {
+      if (prev.includes(collegeId)) {
+        return prev.filter(id => id !== collegeId);
+      }
+      if (prev.length >= 2) {
+        return [prev[1], collegeId];
+      }
+      return [...prev, collegeId];
+    });
+  };
+
 
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
+    <div style={{ height: '100vh', width: '100%', position: 'relative' }}>
+      {/* College Selection Panel - Top Left */}
+      <div style={{ 
+        position: 'absolute', 
+        top: '80px', 
+        left: '10px', 
+        zIndex: 1000, 
+        backgroundColor: 'white', 
+        padding: '15px', 
+        borderRadius: '8px',
+        boxShadow: '0 2px 4px rgba(0,0,0,0.2)',
+        maxWidth: '250px'
+      }}>
+        {/* Current Location Toggle */}
+        <div style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid #e5e7eb' }}>
+          <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '13px', marginBottom: '5px' }}>
+            <input
+              type="checkbox"
+              checked={useCurrentLocation}
+              onChange={(e) => {
+                setUseCurrentLocation(e.target.checked);
+                if (e.target.checked) {
+                  getCurrentLocation();
+                  setSelectedColleges([]);
+                } else {
+                  setCurrentLocation(null);
+                }
+              }}
+              style={{ marginRight: '8px' }}
+            />
+            <strong>📍 Use My Current Location</strong>
+          </label>
+          {useCurrentLocation && !currentLocation && !locationError && (
+            <p style={{ fontSize: '11px', color: '#6b7280', margin: '5px 0 0 0' }}>Getting location...</p>
+          )}
+          {locationError && (
+            <p style={{ fontSize: '11px', color: '#ef4444', margin: '5px 0 0 0' }}>{locationError}</p>
+          )}
+          {useCurrentLocation && currentLocation && (
+            <p style={{ fontSize: '11px', color: '#10b981', margin: '5px 0 0 0' }}>✓ Location acquired</p>
+          )}
+        </div>
+
+        {/* College Selection */}
+        <h3 style={{ margin: '0 0 10px 0', fontSize: '14px' }}>
+          {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
+        </h3>
+
+        {colleges.map(college => (
+          <div key={college.id} style={{ marginBottom: '5px' }}>
+            <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: '12px' }}>
+              <input
+                type="checkbox"
+                checked={selectedColleges.includes(college.id)}
+                onChange={() => handleCollegeSelect(college.id)}
+                disabled={useCurrentLocation && selectedColleges.length >= 1 && !selectedColleges.includes(college.id)}
+                style={{ marginRight: '8px' }}
+              />
+              {college.collegeName}
+            </label>
+          </div>
+        ))}
+        {((selectedColleges.length === 2 && !useCurrentLocation) || 
+          (selectedColleges.length === 1 && useCurrentLocation)) && (
+          <button 
+            onClick={() => {
+              setSelectedColleges([]);
+              setUseCurrentLocation(false);
+              setCurrentLocation(null);
+            }}
+            style={{ 
+              marginTop: '10px', 
+              padding: '5px 10px', 
+              backgroundColor: '#ef4444', 
+              color: 'white', 
+              border: 'none', 
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '12px',
+              width: '100%'
+            }}
+          >
+            Clear Route
+          </button>
+        )}
+      </div>
       <MapContainer 
         center={centerPosition} 
-        zoom={6} 
+        zoom={5} 
         style={{ height: '100%', width: '100%' }}
         scrollWheelZoom={true}
       >
@@ -94,6 +219,13 @@ const Map = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
         />
+        {currentLocation && useCurrentLocation && (
+          <Marker position={currentLocation} icon={createColoredIcon('violet')}>
+            <Popup>
+              <strong>Your Current Location</strong>
+            </Popup>
+          </Marker>
+        )}
         {colleges.map((college) => {
           const position = locationCoordinates[college.location];
           const color = locationColors[college.location] || 'blue';
