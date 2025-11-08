@@ -57,3 +57,28 @@ def put_clep_policies(uuid):
         return jsonify(res.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@clep_policies_bp.route('/filter', methods=['POST'])
+def get_clep_policies_filtered():
+    paylord = request.json or {}
+    state = paylord["userLocation"].split(", ")[1]
+    instate = paylord["inState"]
+
+    data = []
+    if instate:
+        try:
+            data = supabase.table("institutes").select("*").eq("state", state).execute()
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+    else:
+        try:
+            data = supabase.table("institutes").select("*").execute()
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    
+
+    # get institutes
+    # filter by states
+    # get all clep_poloicies (clep exam and its corresponding class that the university offers)
+    # based on the scores they got, show the row that 
