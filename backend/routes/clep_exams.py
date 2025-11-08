@@ -24,13 +24,62 @@ def clep_exams():
             }), 500
     
     elif request.method == 'POST':
-        # TODO: Implement POST logic
-        pass
+        try:
+            data = request.get_json()
+            response = supabase.table('clepexams').insert(data).execute()
+            return jsonify({
+                'success': True,
+                'data': response.data,
+                'message': 'CLEP exam created successfully'
+            }), 201
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
     
     elif request.method == 'PUT':
-        # TODO: Implement PUT logic
-        pass
+        try:
+            data = request.get_json()
+            exam_id = data.get('id')
+            
+            if not exam_id:
+                return jsonify({
+                    'success': False,
+                    'error': 'ID is required for update'
+                }), 400
+            
+            response = supabase.table('clepexams').update(data).eq('id', exam_id).execute()
+            return jsonify({
+                'success': True,
+                'data': response.data,
+                'message': 'CLEP exam updated successfully'
+            }), 200
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
     
     elif request.method == 'DELETE':
-        # TODO: Implement DELETE logic
-        pass
+        try:
+            data = request.get_json()
+            exam_id = data.get('id')
+            
+            if not exam_id:
+                return jsonify({
+                    'success': False,
+                    'error': 'ID is required for deletion'
+                }), 400
+            
+            response = supabase.table('clepexams').delete().eq('id', exam_id).execute()
+            return jsonify({
+                'success': True,
+                'data': response.data,
+                'message': 'CLEP exam deleted successfully'
+            }), 200
+        except Exception as e:
+            return jsonify({
+                'success': False,
+                'error': str(e)
+            }), 500
