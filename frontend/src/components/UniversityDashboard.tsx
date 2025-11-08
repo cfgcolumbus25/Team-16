@@ -17,6 +17,7 @@ import {
   TextField,
 } from '@mui/material';
 import CLEPScoringManager from './CLEPScoringManager';
+import Login from './login';
 
 interface Institution {
   id: number;
@@ -27,6 +28,7 @@ const UniversityDashboard: React.FC = () => {
   const [selectedInstitution, setSelectedInstitution] = useState<number | ''>('');
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [showRequestForm, setShowRequestForm] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [requestFormData, setRequestFormData] = useState({
     institutionName: '',
     location: '',
@@ -65,7 +67,12 @@ const UniversityDashboard: React.FC = () => {
       setShowRequestForm(true);
     } else {
       setSelectedInstitution(value);
+      setIsLoggedIn(false); // Reset login when institution changes
     }
+  };
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
   };
 
   const handleRequestSubmit = async (e: React.FormEvent) => {
@@ -142,6 +149,7 @@ const UniversityDashboard: React.FC = () => {
             value={selectedInstitution}
             label="Select Your Institution"
             onChange={handleInstitutionChange}
+            disabled={isLoggedIn}
           >
             {institutions.map((inst) => (
               <MenuItem key={inst.id} value={inst.id}>
@@ -155,7 +163,13 @@ const UniversityDashboard: React.FC = () => {
         </FormControl>
       </Paper>
 
-      {selectedInstitution && (
+      {selectedInstitution && !isLoggedIn && (
+        <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+          <Login userType="University" onLoginSuccess={handleLoginSuccess} />
+        </Paper>
+      )}
+
+      {selectedInstitution && isLoggedIn && (
         <CLEPScoringManager institutionId={selectedInstitution as number} />
       )}
 

@@ -15,9 +15,10 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom';
 
 interface LoginProps {
   userType?: 'Learners' | 'University' | 'Admin';
+  onLoginSuccess?: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ userType = 'Learners' }) => {
+const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -63,7 +64,12 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners' }) => {
         if (userType === 'Learners') {
           navigate('/');
         } else if (userType === 'University') {
-          navigate('/university-dashboard');
+          // Call onLoginSuccess callback if provided (for embedded login in UniversityDashboard)
+          if (onLoginSuccess) {
+            onLoginSuccess();
+          } else {
+            navigate('/university-dashboard');
+          }
         } else if (userType === 'Admin') {
           navigate('/admin-dashboard');
         }
