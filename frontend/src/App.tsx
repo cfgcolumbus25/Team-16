@@ -4,6 +4,7 @@ import viteLogo from '/vite.svg'
 import NavBar from './components/navbar'
 import { HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css'
+import FilterForm from './components/filterFrame'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -15,6 +16,7 @@ function App() {
         <NavBar links={links} />
         <p className='text-blue-50'>Hello</p>
         <Routes></Routes>
+        <FilterForm/>
 
       </Router>
     </>
