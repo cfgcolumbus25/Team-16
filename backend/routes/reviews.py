@@ -35,3 +35,17 @@ def add_institution():
         return jsonify(res.data), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+    
+@reviews_bp.route('/reviews/<review_id>', methods=['PUT'])
+def update_institution(review_id):
+    payload = request.json or {}
+    updates = {k: v for k, v in payload.items() if k in REQUIRED_FIELDS}
+
+    if not updates:
+        return jsonify({"error": "No valid fields to update"}), 400
+
+    try:
+        res = supabase.table("reviews").update(updates).eq("review_id", review_id).execute()
+        return jsonify(res.data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
