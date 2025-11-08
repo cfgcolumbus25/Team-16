@@ -14,6 +14,7 @@ import UniversityDashboard from './components/UniversityDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import AboutUs from './components/AboutUs';
 import CollegeContainer from "./containers/CollegeContainer.tsx";
+import FilterForm from "./components/filterFrame.tsx";
 
 function App() {
   const links = ["CLEP Search", "Recent Events", "About Us"];
@@ -34,6 +35,7 @@ function App() {
               gap: '16px', 
               padding: '16px' 
             }}>
+              <FilterForm/>
               <CollegeContainer />
               <Map />
             </div>

@@ -57,7 +57,7 @@ import {
               <Button
                 sx={{
                   background: 'transparent',
-                  '&:hover': { background: 'rgba(2,0,36,0.8)' },
+                  '&:hover': { background: 'transparent' },
                   color: 'white',
                 }}
                 component={RouterLink}
@@ -122,7 +122,7 @@ import {
               <Button
                 sx={{
                   background: 'transparent',
-                  '&:hover': { background: 'rgba(2,0,36,0.8)' },
+                  '&:hover': { background: 'transparent' },
                   color: 'white',
                   minWidth: '200px',
                   justifyContent: 'flex-start',

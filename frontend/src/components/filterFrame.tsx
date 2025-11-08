@@ -16,19 +16,20 @@ type University = {
 
 export default function FilterForm() {
   const [studentLocation, setStudentLocation] = useState("");
-  const [collegePreference, setCollegePreference] = useState("");
+  // const [collegePreference, setCollegePreference] = useState("");
   const [inOrOutOfState, setInOrOutOfState] = useState<boolean | null>(null);
 
   const [clepScores, setClepScores] = useState<ClepScore[]>([]);
   const [currentExam, setCurrentExam] = useState("");
   const [currentScore, setCurrentScore] = useState<number | string>(50);
 
-  const [collegeQuery, setCollegeQuery] = useState("");
-  const [debouncedCollegeQuery] = useDebounce(collegeQuery, 300);
-  const [universitySuggestions, setUniversitySuggestions] = useState<University[]>([]);
+  // const [collegeQuery, setCollegeQuery] = useState("");
+  // const [debouncedCollegeQuery] = useDebounce(collegeQuery, 300);
+  // const [universitySuggestions, setUniversitySuggestions] = useState<University[]>([]);
 
   const examList = ["College Algebra", "Biology", "Psychology", "Calculus"];
 
+  /*
   useEffect(() => {
     if (debouncedCollegeQuery) {
       fetch(
@@ -46,27 +47,22 @@ export default function FilterForm() {
       setUniversitySuggestions([]);
     }
   }, [debouncedCollegeQuery]);
+  */
 
   const addExam = () => {
     const scoreAsNumber = Number(currentScore);
 
-    // Check for empty fields first
     if (!currentExam || currentScore === "") {
       alert("Please enter an exam name and score.");
-      return; // Stop the function
+      return;
     }
 
-    // Check for the valid range
     if (scoreAsNumber < 20 || scoreAsNumber > 80) {
-      alert("Score must be between 20 and 80."); // Show an error
-      return; // Stop the function
+      alert("Score must be between 20 and 80.");
+      return;
     }
-    // --- END VALIDATION ---
 
-    setClepScores([
-      ...clepScores,
-      { examName: currentExam, score: scoreAsNumber }, // Use the validated number
-    ]);
+    setClepScores([...clepScores, { examName: currentExam, score: scoreAsNumber }]);
     setCurrentExam("");
     setCurrentScore(50);
   };
@@ -78,7 +74,7 @@ export default function FilterForm() {
   const submitForm = () => {
     const payload = {
       studentLocation,
-      collegePreference,
+      // collegePreference,
       inOrOutOfState,
       clepExamScores: clepScores,
     };
@@ -92,14 +88,10 @@ export default function FilterForm() {
 
       <StudentLocationInput setStudentLocation={setStudentLocation} />
 
-      {/* College Preference Combobox */}
+      {/*
       <div>
         <label className="font-medium text-sm">College Preference</label>
-
-        <Combobox
-          value={collegePreference}
-          onChange={(val) => setCollegePreference(val ?? "")}
-        >
+        <Combobox value={collegePreference} onChange={(val) => setCollegePreference(val ?? "")}>
           <div className="relative">
             <Combobox.Input
               className="w-full border p-2 rounded-md"
@@ -120,8 +112,9 @@ export default function FilterForm() {
           </div>
         </Combobox>
       </div>
+      */}
 
-      {/* In or Out of State */}
+      {/* State Preference */}
       <div>
         <label className="font-medium text-sm block">State Preference</label>
         <select
@@ -139,7 +132,6 @@ export default function FilterForm() {
         <label className="font-medium text-sm">Add CLEP Scores</label>
 
         <div className="flex gap-2 items-end mt-2">
-          {/* Test Name Input Group */}
           <div className="flex-1">
             <label className="font-medium text-sm block mb-1">Test Name</label>
             <Combobox value={currentExam} onChange={(val) => setCurrentExam(val ?? "")}>
@@ -164,7 +156,6 @@ export default function FilterForm() {
             </Combobox>
           </div>
 
-          {/* Score Input Group */}
           <div>
             <label className="font-medium text-sm block mb-1">Score:</label>
             <input
@@ -179,28 +170,21 @@ export default function FilterForm() {
             />
           </div>
 
-          {/* Add Button */}
-          <div>
-            <button
-              onClick={addExam}
-              className="px-3 py-2 bg-amber-200 border-amber-900 text-black rounded-md"
-            >
-              Add +
-            </button>
-          </div>
+          <button
+            onClick={addExam}
+            className="px-3 py-2 bg-amber-200 border-amber-900 text-black rounded-md"
+          >
+            Add +
+          </button>
         </div>
 
-        {/* List of added scores */}
         <div className="mt-3 space-y-1">
           {clepScores.map((item, idx) => (
             <div key={idx} className="flex justify-between items-center text-sm text-gray-700">
-              <span>
-                • {item.examName} — Score: {item.score}
-              </span>
+              <span>• {item.examName} — Score: {item.score}</span>
               <button
                 onClick={() => removeExam(idx)}
-                className="ml-2 px-2 py-0.5 rounded-full bg-amber-200 border-amber-900 text-black hover:bg-amber-200 border-amber-900"
-                aria-label={`Remove ${item.examName}`}
+                className="ml-2 px-2 py-0.5 rounded-full bg-amber-200 border-amber-900 text-black"
               >
                 &minus;
               </button>
@@ -211,7 +195,7 @@ export default function FilterForm() {
 
       <button
         onClick={submitForm}
-        className="w-full bg-amber-200 border-amber-900 text-black py-2 rounded-md font-semibold hover:bg-amber-200 border-amber-1000"
+        className="w-full bg-amber-200 border-amber-900 text-black py-2 rounded-md font-semibold"
       >
         Submit
       </button>
