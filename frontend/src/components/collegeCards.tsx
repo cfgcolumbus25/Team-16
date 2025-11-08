@@ -1,4 +1,5 @@
 import React from "react";
+
 export type collegeDisplay = {
   id: number;
   collegeName: string;

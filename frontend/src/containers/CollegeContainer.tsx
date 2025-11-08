@@ -3,7 +3,9 @@ import CollegeCards from "../components/collegeCards";
 
 const CollegeContainer = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const dropDownOptions = ["None", "Location", "Accepted Scores"];
+
   const colleges = [
     {
       id: 1,
@@ -19,8 +21,8 @@ const CollegeContainer = () => {
       collegeName: "Ohio State University",
       location: "Ohio",
       cost: 50000,
-      acceptanceRate: 10,
-      clepAccept: 10,
+      acceptanceRate: 5,
+      clepAccept: 5,
       amountOfStudentClepScores: 20,
     },
     {
@@ -29,11 +31,11 @@ const CollegeContainer = () => {
       location: "Maryland",
       cost: 50000,
       acceptanceRate: 10,
-      clepAccept: 10,
+      clepAccept: 5,
       amountOfStudentClepScores: 20,
     },
   ];
-
+  colleges.sort((a, b) => b.clepAccept - a.clepAccept);
   const filteredColleges = colleges.filter((college) => {
     const matchesSearch = college.collegeName
       .toLowerCase()
