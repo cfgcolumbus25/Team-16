@@ -1,8 +1,8 @@
 const Footer = () => {
   return (
     <footer style={{
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      color: 'white',
+      backgroundImage: 'radial-gradient(circle,rgba(255, 203, 5, 1) 0%, rgba(255, 255, 255, 1) 100%)',
+      color: 'inherit',
       padding: '30px 20px',
       marginTop: '40px'
     }}>
@@ -24,7 +24,7 @@ const Footer = () => {
             href="https://github.com/cfgcolumbus25/Team-16" 
             target="_blank" 
             rel="noopener noreferrer" 
-            style={{ color: 'white', textDecoration: 'none', fontSize: '15px' }}
+            style={{ color: 'inherit', textDecoration: 'none', fontSize: '15px' }}
           >
             GitHub
           </a>
@@ -32,7 +32,7 @@ const Footer = () => {
             href="https://clep.collegeboard.org/" 
             target="_blank" 
             rel="noopener noreferrer" 
-            style={{ color: 'white', textDecoration: 'none', fontSize: '15px' }}
+            style={{ color: 'inherit', textDecoration: 'none', fontSize: '15px' }}
           >
             About CLEP
           </a>
