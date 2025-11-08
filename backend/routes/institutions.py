@@ -5,16 +5,33 @@ institutions_bp = Blueprint('institutions', __name__)
 
 REQUIRED_FIELDS = {
     "name": str,
-    "city": str,
-    "zip": str,
     "cost": str,
-    "acceptance_rate": str
+    "acceptance_rate": str,
+    "state": str
 }
 
 @institutions_bp.route('/institutions', methods=['GET'])
 def get_institutions():
     try:
-        data = supabase.table("universities").select("*").order("name", desc=False).execute()
+        data = supabase.table("institutions").select("*").order("name", desc=False).execute()
+        return jsonify(data.data), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@institutions_bp.route('/institutions/<uni_id>', methods=['GET'])
+def get_courses_for_institution(uni_id):
+    try:
+        # Get all courses linked to this institution
+        data = (
+            supabase.table("UniversityClep")
+            .select("course_names, course_cutoff_score, course_credits, clep_id")
+            .eq("uni_id", uni_id)
+            .execute()
+        )
+
+        if not data.data:
+            return jsonify({"message": "No courses found for this institution"}), 404
+
         return jsonify(data.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -32,7 +49,7 @@ def add_institution():
         return jsonify({"error": "Invalid field types", "invalid": wrong_types}), 400
 
     try:
-        res = supabase.table("universities").insert(payload).execute()
+        res = supabase.table("institutions").insert(payload).execute()
         return jsonify(res.data), 201
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -46,7 +63,7 @@ def update_institution(uni_id):
         return jsonify({"error": "No valid fields to update"}), 400
 
     try:
-        res = supabase.table("universities").update(updates).eq("uni_id", uni_id).execute()
+        res = supabase.table("institutions").update(updates).eq("uni_id", uni_id).execute()
         return jsonify(res.data), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
@@ -54,7 +71,7 @@ def update_institution(uni_id):
 @institutions_bp.route('/institutions/<uni_id>', methods=['DELETE'])
 def delete_institution(uni_id):
     try:
-        res = supabase.table("universities").delete().eq("uni_id", uni_id).execute()
+        res = supabase.table("institutions").delete().eq("uni_id", uni_id).execute()
         return jsonify({"deleted": len(res.data)}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
