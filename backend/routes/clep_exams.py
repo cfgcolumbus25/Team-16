@@ -9,7 +9,7 @@ def get_clep_exams():
     Get all CLEP exams
     """
     try:
-        response = supabase.table('clepexams').select('*').execute()
+        response = supabase.table('clep_exams').select('*').execute()
         return jsonify({
             'success': True,
             'data': response.data,
@@ -40,7 +40,7 @@ def create_clep_exam():
         if 'id' in data:
             del data['id']
         
-        response = supabase.table('clepexams').insert(data).execute()
+        response = supabase.table('clep_exams').insert(data).execute()
         return jsonify({
             'success': True,
             'data': response.data,
@@ -76,7 +76,7 @@ def update_clep_exam():
                 'error': 'No fields to update'
             }), 400
         
-        response = supabase.table('clepexams').update(update_data).eq('clep_id', exam_id).execute()
+        response = supabase.table('clep_exams').update(update_data).eq('clep_id', exam_id).execute()
         
         if not response.data:
             return jsonify({
@@ -110,7 +110,7 @@ def delete_clep_exam():
                 'error': 'ID is required for deletion'
             }), 400
         
-        response = supabase.table('clepexams').delete().eq('clep_id', exam_id).execute()
+        response = supabase.table('clep_exams').delete().eq('clep_id', exam_id).execute()
         
         if not response.data:
             return jsonify({
