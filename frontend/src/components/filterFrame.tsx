@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Combobox } from "@headlessui/react";
+import StudentLocationInput from "./StudentLocationInput";
 
 type ClepScore = {
   examName: string;
@@ -15,8 +16,6 @@ export default function FilterForm() {
   const [currentExam, setCurrentExam] = useState("");
   const [currentScore, setCurrentScore] = useState<number>(50);
 
-  // Example autocomplete lists (replace with API results later)
-  const locations = ["Ohio", "Texas", "California", "New York"];
   const universities = ["Ohio State", "Texas A&M", "UCLA", "NYU"];
   const examList = ["College Algebra", "Biology", "Psychology", "Calculus"];
 
@@ -36,33 +35,16 @@ export default function FilterForm() {
     };
 
     console.log("Submitting →", payload);
-
-    // In the future:
-    // await fetch("/api/filter", { method: "POST", body: JSON.stringify(payload) });
   };
 
   return (
     <div className="max-w-lg mx-auto p-6 border rounded-xl bg-white shadow-sm space-y-6">
-
       <h2 className="text-xl font-bold">Preferences</h2>
 
-      {/* Student Location Combobox */}
-      <div>
-        <label className="font-medium text-sm">Student Location</label>
-        <Combobox value={collegePreference} onChange={(val) => setCollegePreference(val ?? "")}>
-          <Combobox.Input
-            className="w-full border p-2 rounded-md"
-            onChange={(e) => setStudentLocation(e.target.value)}
-          />
-          <Combobox.Options className="border rounded-md bg-white">
-            {locations.map((loc) => (
-              <Combobox.Option key={loc} value={loc} className="p-2 cursor-pointer hover:bg-gray-100">
-                {loc}
-              </Combobox.Option>
-            ))}
-          </Combobox.Options>
-        </Combobox>
-      </div>
+      
+      <StudentLocationInput
+        setStudentLocation={setStudentLocation}
+      />
 
       {/* College Preference Combobox */}
       <div>
@@ -100,7 +82,7 @@ export default function FilterForm() {
         <label className="font-medium text-sm">Add CLEP Scores</label>
 
         <div className="flex gap-2 items-center mt-2">
-        <Combobox value={currentExam} onChange={(val) => setCurrentExam(val ?? "")}>
+          <Combobox value={currentExam} onChange={(val) => setCurrentExam(val ?? "")}>
             <Combobox.Input
               className="border p-2 rounded-md w-full"
               placeholder="Exam Name"
@@ -132,7 +114,6 @@ export default function FilterForm() {
           </button>
         </div>
 
-        {/* Display Added Exams */}
         <div className="mt-3 space-y-1">
           {clepScores.map((item, idx) => (
             <div key={idx} className="text-sm text-gray-700">
@@ -142,14 +123,12 @@ export default function FilterForm() {
         </div>
       </div>
 
-      {/* SUBMIT BUTTON */}
       <button
         onClick={submitForm}
         className="w-full bg-emerald-600 text-white py-2 rounded-md font-semibold hover:bg-emerald-700"
       >
         Submit
       </button>
-
     </div>
   );
 }
