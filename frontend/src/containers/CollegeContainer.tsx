@@ -3,6 +3,12 @@ import CollegeCards from "../components/collegeCards";
 
 const CollegeContainer = () => {
   const [searchTerm, setSearchTerm] = useState("");
+  const [filterCost, setfilterCost] = useState("All");
+  const [filterAcceptance, setfilterAcceptance] = useState("All");
+  const [filterCredit, setfilterCredit] = useState("All");
+  const costOptions = ["All", "< 50,000", "50,000 - 75,000", "> 75,000"];
+  const acceptanceOptions = ["All", "< 5%", "5% - 10%", "> 10%"];
+  const creditOptions = ["All", "< 18", "18 - 20", "> 20"];
 
   const colleges = [
     {
@@ -144,13 +150,38 @@ const CollegeContainer = () => {
     },
   ];
 
-
   colleges.sort((a, b) => b.clepAccept - a.clepAccept);
+
   const filteredColleges = colleges.filter((college) => {
     const matchesSearch = college.collegeName
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
-    return matchesSearch;
+
+    const matchesCost =
+      filterCost === "All" ||
+      (filterCost === "< 50,000" && college.cost < 50000) ||
+      (filterCost === "50,000 - 75,000" &&
+        college.cost >= 50000 &&
+        college.cost <= 75000) ||
+      (filterCost === "> 75,000" && college.cost > 75000);
+
+    const matchesAcceptance =
+      filterAcceptance === "All" ||
+      (filterAcceptance === "< 5%" && college.acceptanceRate < 5) ||
+      (filterAcceptance === "5% - 10%" &&
+        college.acceptanceRate >= 5 &&
+        college.acceptanceRate <= 10) ||
+      (filterAcceptance === "> 10%" && college.acceptanceRate > 10);
+
+    const matchesCredit =
+      filterCredit === "All" ||
+      (filterCredit === "< 18" && college.creditLimit < 18) ||
+      (filterCredit === "18 - 20" &&
+        college.creditLimit >= 18 &&
+        college.creditLimit <= 20) ||
+      (filterCredit === "> 20" && college.creditLimit > 20);
+
+    return matchesSearch && matchesCost && matchesAcceptance && matchesCredit;
   });
 
   return (
@@ -162,6 +193,58 @@ const CollegeContainer = () => {
         onChange={(e) => setSearchTerm(e.target.value)}
         className="flex-1 px-3 py-2 border border-gray-300 text-sm bg-white rounded-3xl w-full"
       />
+      <div className="mb-4 p-1 rounded-lg w-full">
+        <div className="flex gap-4 w-full">
+          {/* Cost Filter */}
+          <div className="flex flex-col flex-1">
+            <p className="text-xs">Filter Cost:</p>
+            <select
+              className="border p-1 rounded w-full"
+              value={filterCost}
+              onChange={(e) => setfilterCost(e.target.value)}
+            >
+              {costOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Acceptance Filter */}
+          <div className="flex flex-col flex-1">
+            <p className="text-xs">Acceptance:</p>
+            <select
+              className="border p-1 rounded w-full"
+              value={filterAcceptance}
+              onChange={(e) => setfilterAcceptance(e.target.value)}
+            >
+              {acceptanceOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Credit Filter */}
+          <div className="flex flex-col flex-1">
+            <p className="text-xs">Credit:</p>
+            <select
+              className="border p-1 rounded w-full"
+              value={filterCredit}
+              onChange={(e) => setfilterCredit(e.target.value)}
+            >
+              {creditOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div className="flex-1 min-h-0 overflow-y-auto space-y-3 pr-2 h-[650px]">
         {filteredColleges.map((college) => (
           <CollegeCards key={college.id} {...college} />
