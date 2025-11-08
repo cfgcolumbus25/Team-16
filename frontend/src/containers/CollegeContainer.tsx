@@ -17,7 +17,7 @@ const CollegeContainer = () => {
       location: "Ithaca",
       cost: 100000,
       acceptanceRate: 10,
-      clepAccept: 1,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 18, // new field
       lastUpdated: new Date("2025-09-01"), // new field
@@ -42,7 +42,7 @@ const CollegeContainer = () => {
       location: "Ohio",
       cost: 50000,
       acceptanceRate: 5,
-      clepAccept: 5,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 20,
       lastUpdated: new Date("2025-08-15"),
@@ -73,7 +73,7 @@ const CollegeContainer = () => {
       location: "Maryland",
       cost: 50000,
       acceptanceRate: 10,
-      clepAccept: 5,
+      clepAccept: 0,
       amountOfStudentClepScores: 20,
       creditLimit: 19,
       lastUpdated: new Date("2025-07-10"),
@@ -98,8 +98,8 @@ const CollegeContainer = () => {
       location: "Los Angeles",
       cost: 60000,
       acceptanceRate: 8,
-      clepAccept: 7,
-      amountOfStudentClepScores: 30,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
       creditLimit: 21,
       lastUpdated: new Date("2025-09-05"),
       clepExams: [
@@ -129,8 +129,8 @@ const CollegeContainer = () => {
       location: "Gainesville",
       cost: 48000,
       acceptanceRate: 9,
-      clepAccept: 8,
-      amountOfStudentClepScores: 25,
+      clepAccept: 0,
+      amountOfStudentClepScores: 20,
       creditLimit: 20,
       lastUpdated: new Date("2025-08-20"),
       clepExams: [
@@ -149,6 +149,10 @@ const CollegeContainer = () => {
       ],
     },
   ];
+
+  colleges.forEach((college) => {
+    college.clepAccept = college.clepExams.length;
+  });
 
   colleges.sort((a, b) => b.clepAccept - a.clepAccept);
 
