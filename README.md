@@ -36,4 +36,37 @@ The application includes the following main navigation items:
 
 ## Tech Stack
 
-Used React + Supabase in order to make full-stack application. Team 16 @ Code for Good
+### Frontend
+- **React 18.3.1** - UI library for building the user interface
+- **TypeScript 5.9.3** - Type-safe JavaScript for improved code quality
+- **Vite 7.1.7** - Fast build tool and development server
+- **React Router DOM 7.9.5** - Client-side routing and navigation
+
+#### UI Libraries & Styling
+- **Material-UI (MUI) 7.3.5** - Component library for navbar and UI elements
+- **Tailwind CSS 4.1.17** - Utility-first CSS framework
+- **Chakra UI 3.29.0** - Component library for additional UI components
+- **Framer Motion 12.23.24** - Animation library
+- **Headless UI 2.2.9** - Unstyled, accessible UI components
+
+#### Mapping & Geolocation
+- **Leaflet 1.9.4** - Open-source JavaScript library for interactive maps
+- **React Leaflet 4.2.1** - React components for Leaflet maps
+- **Leaflet Routing Machine 3.2.12** - Routing and directions on Leaflet maps
+
+#### Development Tools
+- **ESLint 9.36.0** - Code linting and quality checking
+- **TypeScript ESLint 8.45.0** - TypeScript-specific linting rules
+
+### Backend
+- **Flask** - Python web framework for REST API
+- **Flask-CORS** - Cross-Origin Resource Sharing support
+- **Supabase** - Backend-as-a-Service for database and authentication
+- **Python-dotenv** - Environment variable management
+
+### Development Tools
+- **GitHub Copilot** - AI pair programming assistant for code suggestions
+- **Cursor** - AI-powered code editor for framework scaffolding and debugging
+
+### Project Information
+Built by Team 16 @ Code for Good hackathon to support Modern States Education Alliance's mission of making college education more accessible through CLEP credit transparency.

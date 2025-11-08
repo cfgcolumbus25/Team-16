@@ -29,13 +29,23 @@ interface College {
   amountOfStudentClepScores: number;
 }
 
-// Map location names to coordinates
-const locationCoordinates: { [key: string]: LatLngExpression } = {
-  'Ithaca': [42.4440, -76.5019],
-  'Ohio': [40.4173, -82.9071], // Columbus, OH
-  'Maryland': [38.9897, -76.9378], // College Park, MD
-  'Los Angeles': [34.0689, -118.4452], // UCLA
-  'Gainesville': [29.6436, -82.3549], // University of Florida
+// Map state names to capital city coordinates (used when backend returns state names)
+const stateCoordinates: { [key: string]: LatLngExpression } = {
+  'New York': [42.6526, -73.7562], // Albany, NY
+  'Ohio': [39.9612, -82.9988], // Columbus, OH
+  'Maryland': [38.9784, -76.4922], // Annapolis, MD
+  'California': [38.5816, -121.4944], // Sacramento, CA
+  'Florida': [30.4383, -84.2807], // Tallahassee, FL
+  // Ohio cities
+  'Columbus, Ohio': [39.9612, -82.9988], // Columbus
+  'Cincinnati, Ohio': [39.1031, -84.5120], // Cincinnati
+  'Kent, Ohio': [41.1537, -81.3579], // Kent
+  'Bowling Green, Ohio': [41.3748, -83.6513], // Bowling Green
+};
+
+// Helper function to get coordinates for a location (state or city)
+const getLocationCoordinates = (location: string): LatLngExpression | null => {
+  return stateCoordinates[location] || null;
 };
 
 // Create custom colored markers for each location
@@ -51,11 +61,15 @@ const createColoredIcon = (color: string) => {
 };
 
 const locationColors: { [key: string]: string } = {
-  'Ithaca': 'red',
-  'Ohio': 'blue',
+  'New York': 'red',
   'Maryland': 'green',
-  'Los Angeles': 'orange',
-  'Gainesville': 'violet',
+  'California': 'orange',
+  'Florida': 'violet',
+  // Ohio colleges - each gets unique color
+  'Columbus, Ohio': 'blue',
+  'Cincinnati, Ohio': 'yellow',
+  'Kent, Ohio': 'grey',
+  'Bowling Green, Ohio': 'black',
 };
 
 // Routing component
@@ -179,14 +193,41 @@ const Map = () => {
     {
       id: 2,
       collegeName: "Ohio State University",
-      location: "Ohio",
+      location: "Columbus, Ohio",
       cost: 50000,
-      acceptanceRate: 5,
-      clepAccept: 5,
-      amountOfStudentClepScores: 20,
+      acceptanceRate: 53,
+      clepAccept: 15,
+      amountOfStudentClepScores: 33,
     },
     {
       id: 3,
+      collegeName: "University of Cincinnati",
+      location: "Cincinnati, Ohio",
+      cost: 28000,
+      acceptanceRate: 86,
+      clepAccept: 12,
+      amountOfStudentClepScores: 33,
+    },
+    {
+      id: 4,
+      collegeName: "Kent State University",
+      location: "Kent, Ohio",
+      cost: 20000,
+      acceptanceRate: 88,
+      clepAccept: 18,
+      amountOfStudentClepScores: 33,
+    },
+    {
+      id: 5,
+      collegeName: "Bowling Green State University",
+      location: "Bowling Green, Ohio",
+      cost: 21500,
+      acceptanceRate: 82,
+      clepAccept: 14,
+      amountOfStudentClepScores: 33,
+    },
+    {
+      id: 6,
       collegeName: "University of Maryland",
       location: "Maryland",
       cost: 50000,
@@ -195,18 +236,18 @@ const Map = () => {
       amountOfStudentClepScores: 20,
     },
     {
-      id: 4,
+      id: 7,
       collegeName: "UCLA",
-      location: "Los Angeles",
+      location: "California",
       cost: 60000,
       acceptanceRate: 8,
       clepAccept: 7,
       amountOfStudentClepScores: 30,
     },
     {
-      id: 5,
+      id: 8,
       collegeName: "University of Florida",
-      location: "Gainesville",
+      location: "Florida",
       cost: 48000,
       acceptanceRate: 9,
       clepAccept: 8,
@@ -217,16 +258,25 @@ const Map = () => {
   // Map locations to states
   const locationToState: { [key: string]: string } = {
     'Ithaca': 'New York',
-    'Ohio': 'Ohio',
+    'New York': 'New York',
     'Maryland': 'Maryland',
-    'Los Angeles': 'California',
-    'Gainesville': 'Florida',
+    'California': 'California',
+    'Florida': 'Florida',
+    // Ohio city locations
+    'Columbus, Ohio': 'Ohio',
+    'Cincinnati, Ohio': 'Ohio',
+    'Kent, Ohio': 'Ohio',
+    'Bowling Green, Ohio': 'Ohio',
   };
 
   // Filter colleges based on focused state
   const filteredColleges = focusedState === 'All' 
     ? colleges 
-    : colleges.filter(college => locationToState[college.location] === focusedState);
+    : colleges.filter(college => {
+        const state = locationToState[college.location];
+        console.log(`College: ${college.collegeName}, Location: ${college.location}, Maps to state: ${state}, Focused: ${focusedState}, Match: ${state === focusedState}`);
+        return state === focusedState;
+      });
 
   const centerPosition: LatLngExpression = [38.0, -95.0]; // Center of USA to show all colleges
 
@@ -246,9 +296,11 @@ const Map = () => {
     if (useCurrentLocation && currentLocation && selectedColleges.length === 1) {
       const college = colleges.find(c => c.id === selectedColleges[0]);
       if (!college) return null;
+      const endCoords = getLocationCoordinates(college.location);
+      if (!endCoords) return null;
       return {
         start: currentLocation,
-        end: locationCoordinates[college.location]
+        end: endCoords
       };
     }
     
@@ -256,9 +308,12 @@ const Map = () => {
     const college1 = colleges.find(c => c.id === selectedColleges[0]);
     const college2 = colleges.find(c => c.id === selectedColleges[1]);
     if (!college1 || !college2) return null;
+    const startCoords = getLocationCoordinates(college1.location);
+    const endCoords = getLocationCoordinates(college2.location);
+    if (!startCoords || !endCoords) return null;
     return {
-      start: locationCoordinates[college1.location],
-      end: locationCoordinates[college2.location]
+      start: startCoords,
+      end: endCoords
     };
   };
 
@@ -379,6 +434,11 @@ const Map = () => {
         <h3 style={{ margin: '0 0 10px 0', fontSize: '14px', color: isDark ? '#e8f0f8' : '#000000' }}>
           {useCurrentLocation ? 'Select 1 College for Route' : 'Select 2 Colleges for Route'}
         </h3>
+        
+        {/* Debug info */}
+        <div style={{ fontSize: '10px', color: '#666', marginBottom: '8px', padding: '4px', backgroundColor: '#f0f0f0', borderRadius: '3px' }}>
+          Showing {filteredColleges.length} of {colleges.length} colleges
+        </div>
 
         {filteredColleges.map(college => (
           <div key={college.id} style={{ marginBottom: '5px' }}>
@@ -439,7 +499,7 @@ const Map = () => {
           </Marker>
         )}
         {filteredColleges.map((college) => {
-          const position = locationCoordinates[college.location];
+          const position = getLocationCoordinates(college.location);
           const color = locationColors[college.location] || 'blue';
           if (!position) return null;
           

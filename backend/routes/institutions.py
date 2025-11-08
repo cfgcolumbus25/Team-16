@@ -18,10 +18,10 @@ def get_institutions():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-@institutions_bp.route('/institutions/<uni_id>', methods=['GET'])
+@institutions_bp.route('/institutions/policies/<uni_id>', methods=['GET'])
 def get_courses_for_institution(uni_id):
     try:
-        # Get all courses linked to this institution
+        # Get all the policies linked to this institution
         data = (
             supabase.table("clep_policies")
             .select("course_names, course_cutoff_score, course_credits, clep_id")

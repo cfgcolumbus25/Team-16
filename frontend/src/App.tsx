@@ -18,6 +18,7 @@ import CursorShadow from "./components/CursorShadow";
 import FilterForm from "./components/filterFrame.tsx";
 import { useState } from "react";
 import type { collegeDisplay } from "./components/collegeCards.tsx";
+import Info from './components/Info';
 
 function HomePage() {
   const { mode } = useThemeMode();

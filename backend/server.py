@@ -8,6 +8,7 @@ from pathlib import Path
 from routes.institutions import institutions_bp
 from routes.clep_policies import clep_policies_bp
 from routes.clep_exams import clep_exams_bp
+from routes.reviews import reviews_bp
 
 # Load environment variables from .env file in parent directory
 env_path = Path(__file__).parent.parent / '.env'
@@ -20,6 +21,7 @@ CORS(app)
 app.register_blueprint(institutions_bp, url_prefix='/api')
 app.register_blueprint(clep_policies_bp, url_prefix='/api')
 app.register_blueprint(clep_exams_bp, url_prefix='/api')
+app.register_blueprint(reviews_bp, url_prefix='/api')
 
 
 # Health check endpoint
