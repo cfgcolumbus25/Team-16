@@ -1,4 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
+
+export type clepExamsAndScores = {
+  examName: string;
+  thresholdScore: number;
+  courseName: string;
+  numberOfCredits: number;
+};
 
 export type collegeDisplay = {
   id: number;
@@ -8,6 +15,7 @@ export type collegeDisplay = {
   acceptanceRate?: number;
   clepAccept: number;
   amountOfStudentClepScores: number;
+  clepExams: clepExamsAndScores[];
 };
 
 const CollegeCards = ({
@@ -18,7 +26,9 @@ const CollegeCards = ({
   acceptanceRate,
   clepAccept,
   amountOfStudentClepScores,
+  clepExams,
 }: collegeDisplay) => {
+  const [openMore, setOpenMore] = useState(false);
   return (
     <div
       className="relative border p-4 rounded-2xl border-gray-300 bg-white hover:shadow-md transition-shadow"
@@ -27,7 +37,7 @@ const CollegeCards = ({
       {/* Badge in the corner */}
       <div className="absolute top-3 right-3 px-2 py-1 rounded-full border bg-amber-200 border-amber-900">
         <div className="text-amber-900 font-semibold text-xs">
-          {clepAccept} / {amountOfStudentClepScores}
+          {clepAccept} / {amountOfStudentClepScores} Accepted CLEP Exams
         </div>
       </div>
 
@@ -49,6 +59,9 @@ const CollegeCards = ({
           </div>
         </div>
       </div>
+      <button onClick={() => setOpenMore(!openMore)}>See More</button>
+      {/* {Show More} */}
+      {openMore && <div>hello</div>}
     </div>
   );
 };
