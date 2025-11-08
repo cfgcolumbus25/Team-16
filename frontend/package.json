@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.5",
+    "@mui/material": "^7.3.5",
     "@tailwindcss/vite": "^4.1.17",
     "@chakra-ui/react": "^3.29.0",
     "@emotion/react": "^11.14.0",
@@ -18,8 +22,8 @@
     "leaflet": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwindcss": "^4.1.17",
-    "react-leaflet": "^4.2.1"
+    "react-router-dom": "^7.9.5",
+    "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",
