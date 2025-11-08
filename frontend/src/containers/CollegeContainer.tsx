@@ -199,7 +199,7 @@ const CollegeContainer = () => {
           <div className="flex flex-col flex-1">
             <p className="text-xs">Filter Cost:</p>
             <select
-              className="border p-1 rounded w-full"
+              className="border p-1 rounded w-full border-gray-300"
               value={filterCost}
               onChange={(e) => setfilterCost(e.target.value)}
             >
@@ -215,7 +215,7 @@ const CollegeContainer = () => {
           <div className="flex flex-col flex-1">
             <p className="text-xs">Acceptance:</p>
             <select
-              className="border p-1 rounded w-full"
+              className="border p-1 rounded w-full border-gray-300"
               value={filterAcceptance}
               onChange={(e) => setfilterAcceptance(e.target.value)}
             >
@@ -231,7 +231,7 @@ const CollegeContainer = () => {
           <div className="flex flex-col flex-1">
             <p className="text-xs">Credit:</p>
             <select
-              className="border p-1 rounded w-full"
+              className="border p-1 rounded w-full border-gray-300"
               value={filterCredit}
               onChange={(e) => setfilterCredit(e.target.value)}
             >
