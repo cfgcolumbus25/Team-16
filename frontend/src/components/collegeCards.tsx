@@ -20,11 +20,11 @@ const CollegeCards = ({
 }: collegeDisplay) => {
   return (
     <div
-      className="relative p-4 rounded-2xl border-gray-500 border-2 bg-white hover:shadow-md transition-shadow"
+      className="relative border p-4 rounded-2xl border-gray-300 bg-white hover:shadow-md transition-shadow"
       style={{ cursor: "pointer" }}
     >
       {/* Badge in the corner */}
-      <div className="absolute top-3 right-3 px-2 py-1 rounded-full bg-amber-200 border-2 border-amber-900">
+      <div className="absolute top-3 right-3 px-2 py-1 rounded-full border bg-amber-200 border-amber-900">
         <div className="text-amber-900 font-semibold text-xs">
           {clepAccept} / {amountOfStudentClepScores}
         </div>
