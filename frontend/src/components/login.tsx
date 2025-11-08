@@ -12,6 +12,7 @@ import {
   Link,
 } from '@mui/material';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { useThemeMode } from '../contexts/ThemeContext';
 
 interface LoginProps {
   userType?: 'Learners' | 'University' | 'Admin';
@@ -20,6 +21,8 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) => {
   const navigate = useNavigate();
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -90,27 +93,54 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundColor: 'rgba(255, 203, 5, 0.15)',
+        backgroundColor: isDark 
+          ? 'transparent'
+          : 'rgba(255, 203, 5, 0.15)',
         pt: 8,
         pb: 4,
+        transition: 'background-color 0.3s ease',
       }}
     >
       <Container maxWidth="sm">
-        <Paper elevation={3} sx={{ p: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom align="center" sx={{ color: 'rgba(255, 203, 5, 1)' }}>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 4,
+            background: isDark
+              ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+              : 'white',
+            border: isDark
+              ? '1px solid rgba(168, 208, 240, 0.3)'
+              : 'none',
+            transition: 'background 0.3s ease, border 0.3s ease',
+          }}
+        >
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          gutterBottom 
+          align="center" 
+          sx={{ 
+            color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+            transition: 'color 0.3s ease',
+          }}
+        >
           {userType} {isLogin ? 'Login' : 'Register'}
         </Typography>
 
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+        <Box sx={{ borderBottom: 1, borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'divider', mb: 3 }}>
           <Tabs 
             value={isLogin ? 0 : 1} 
             onChange={(_, newValue) => setIsLogin(newValue === 0)}
             sx={{
+              '& .MuiTab-root': {
+                color: isDark ? '#a8d0f0' : 'inherit',
+              },
               '& .MuiTab-root.Mui-selected': {
-                color: 'rgba(255, 203, 5, 1)',
+                color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
               },
               '& .MuiTabs-indicator': {
-                backgroundColor: 'rgba(255, 203, 5, 1)',
+                backgroundColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
               },
             }}
           >
@@ -135,6 +165,29 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
             margin="normal"
             required
             autoComplete="email"
+            sx={{
+              '& .MuiInputLabel-root': {
+                color: isDark ? '#a8d0f0' : 'inherit',
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+              },
+              '& .MuiOutlinedInput-root': {
+                color: isDark ? '#e8f0f8' : 'inherit',
+                '& fieldset': {
+                  borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                },
+                '&:hover fieldset': {
+                  borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                },
+              },
+              '& .MuiInputBase-input': {
+                backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+              },
+            }}
           />
 
           <TextField
@@ -146,6 +199,29 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
             margin="normal"
             required
             autoComplete={isLogin ? 'current-password' : 'new-password'}
+            sx={{
+              '& .MuiInputLabel-root': {
+                color: isDark ? '#a8d0f0' : 'inherit',
+              },
+              '& .MuiInputLabel-root.Mui-focused': {
+                color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+              },
+              '& .MuiOutlinedInput-root': {
+                color: isDark ? '#e8f0f8' : 'inherit',
+                '& fieldset': {
+                  borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                },
+                '&:hover fieldset': {
+                  borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                },
+                '&.Mui-focused fieldset': {
+                  borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                },
+              },
+              '& .MuiInputBase-input': {
+                backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+              },
+            }}
           />
 
           {!isLogin && (
@@ -158,6 +234,29 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
               margin="normal"
               required
               autoComplete="new-password"
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
           )}
 
@@ -169,11 +268,13 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
               mt: 3, 
               mb: 2, 
               py: 1.5,
-              backgroundColor: 'rgba(255, 203, 5, 1)',
-              color: '#000',
+              backgroundColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'rgba(255, 203, 5, 1)',
+              color: isDark ? '#e8f0f8' : '#000',
+              border: isDark ? '1px solid rgba(168, 208, 240, 0.5)' : 'none',
               '&:hover': {
-                backgroundColor: 'rgba(255, 203, 5, 0.9)',
+                backgroundColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'rgba(255, 203, 5, 0.9)',
               },
+              transition: 'background-color 0.3s ease, border 0.3s ease',
             }}
           >
             {isLogin ? 'Login' : 'Register'}
@@ -186,10 +287,12 @@ const Login: React.FC<LoginProps> = ({ userType = 'Learners', onLoginSuccess }) 
             to="/" 
             sx={{ 
               textDecoration: 'none',
-              color: 'rgba(255, 203, 5, 1)',
+              color: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
               '&:hover': {
                 textDecoration: 'underline',
+                color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 0.9)',
               },
+              transition: 'color 0.3s ease',
             }}
           >
             ← Back to Home
