@@ -44,7 +44,7 @@ export default function DrawerComp({ links }: DrawerCompProps) {
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2 }}>
           <Typography variant="h6" sx={{ color: mode === 'dark' ? '#e8f0f8' : 'black', mb: 2 }}>
-            Modern States
+            Modern States - PathFindr
           </Typography>
 
           <List>
