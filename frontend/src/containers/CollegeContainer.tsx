@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import CollegeCards from "../components/collegeCards";
 
 const CollegeContainer = () => {
