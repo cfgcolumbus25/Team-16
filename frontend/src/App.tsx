@@ -17,31 +17,34 @@ import CollegeContainer from "./containers/CollegeContainer.tsx";
 import { ThemeProvider, useThemeMode } from "./contexts/ThemeContext";
 import CursorShadow from './components/CursorShadow';
 import FilterForm from "./components/filterFrame.tsx";
+import { useState } from "react";
+import type { collegeDisplay } from "./components/collegeCards.tsx";
 
-function HomePage() {
-  const { mode } = useThemeMode();
+// function HomePage() {
+//   const { mode } = useThemeMode();
   
-  return (
-    <div 
-      style={{ 
-        display: 'grid', 
-        gridTemplateColumns: '1fr 1fr', 
-        gap: '16px', 
-        padding: '16px',
-        backgroundColor: mode === 'dark' ? 'transparent' : '#ffffff',
-        minHeight: 'calc(100vh - 200px)',
-        transition: 'background-color 0.3s ease',
-      }}
-    >
-      <FilterForm/>
-      <CollegeContainer />
-      <Map />
-    </div>
-  );
-}
+//   return (
+//     <div 
+//       style={{ 
+//         display: 'grid', 
+//         gridTemplateColumns: '1fr 1fr', 
+//         gap: '16px', 
+//         padding: '16px',
+//         backgroundColor: mode === 'dark' ? 'transparent' : '#ffffff',
+//         minHeight: 'calc(100vh - 200px)',
+//         transition: 'background-color 0.3s ease',
+//       }}
+//     >
+//       <FilterForm/>
+//       <CollegeContainer />
+//       <Map />
+//     </div>
+//   );
+// }
 
 function App() {
   const links = ["CLEP Search", "About Us"];
+  const [colleges, setColleges] = useState<collegeDisplay[]>([])
 
   return (
     <ThemeProvider>
@@ -60,8 +63,8 @@ function App() {
               gap: '16px', 
               padding: '16px' 
             }}>
-              <FilterForm/>
-              <CollegeContainer />
+              <FilterForm setColleges={setColleges}/>
+              <CollegeContainer colleges={colleges}/>
               <Map />
             </div>
           } />
