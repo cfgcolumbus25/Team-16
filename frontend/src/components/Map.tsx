@@ -1,10 +1,8 @@
-import { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import type { LatLngExpression } from 'leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import 'leaflet-routing-machine';
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 
 // Fix for default marker icons
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,42 +49,6 @@ const locationColors: { [key: string]: string } = {
   'Maryland': 'green',
 };
 
-// Routing component
-interface RoutingMachineProps {
-  start: LatLngExpression;
-  end: LatLngExpression;
-}
-
-const RoutingMachine = ({ start, end }: RoutingMachineProps) => {
-  const map = useMap();
-
-  useEffect(() => {
-    if (!map) return;
-
-    const routingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(start as [number, number]),
-        L.latLng(end as [number, number])
-      ],
-      routeWhileDragging: true,
-      showAlternatives: false,
-      addWaypoints: false,
-      lineOptions: {
-        styles: [{ color: '#6366f1', weight: 4, opacity: 0.7 }],
-        extendToWaypoints: true,
-        missingRouteTolerance: 0
-      },
-      show: true,
-      fitSelectedRoutes: false,
-    }).addTo(map);
-
-    return () => {
-      map.removeControl(routingControl);
-    };
-  }, [map, start, end]);
-
-  return null;
-};
 
 const Map = () => {
   const [selectedColleges, setSelectedColleges] = useState<number[]>([]);
@@ -159,27 +121,6 @@ const Map = () => {
     });
   };
 
-  const getRoutePoints = () => {
-    if (useCurrentLocation && currentLocation && selectedColleges.length === 1) {
-      const college = colleges.find(c => c.id === selectedColleges[0]);
-      if (!college) return null;
-      return {
-        start: currentLocation,
-        end: locationCoordinates[college.location]
-      };
-    }
-    
-    if (selectedColleges.length !== 2) return null;
-    const college1 = colleges.find(c => c.id === selectedColleges[0]);
-    const college2 = colleges.find(c => c.id === selectedColleges[1]);
-    if (!college1 || !college2) return null;
-    return {
-      start: locationCoordinates[college1.location],
-      end: locationCoordinates[college2.location]
-    };
-  };
-
-  const routePoints = getRoutePoints();
 
   return (
     <div style={{ height: '100vh', width: '100%', position: 'relative' }}>
@@ -302,9 +243,6 @@ const Map = () => {
             </Marker>
           );
         })}
-        {routePoints && (
-          <RoutingMachine start={routePoints.start} end={routePoints.end} />
-        )}
       </MapContainer>
     </div>
   );
