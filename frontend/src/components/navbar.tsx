@@ -30,6 +30,7 @@ import {
     const location = useLocation();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
+    const { mode, toggleTheme } = useThemeMode();
 
   
     const getPath = (link: string): string => {
@@ -50,7 +51,13 @@ import {
 
     const handleUserTypeSelect = (userType: 'Learners' | 'University' | 'Admin') => {
       handleMenuClose();
-      navigate(`/login?type=${userType}`);
+      if (userType === 'University') {
+        // University goes directly to dashboard (institution selection first)
+        navigate('/university-dashboard');
+      } else {
+        // Learners and Admin go to login page
+        navigate(`/login?type=${userType}`);
+      }
     };
   
     return (
