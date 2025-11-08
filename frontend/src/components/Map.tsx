@@ -30,6 +30,24 @@ const locationCoordinates: { [key: string]: LatLngExpression } = {
   'Maryland': [38.9897, -76.9378], // College Park, MD
 };
 
+// Create custom colored markers for each location
+const createColoredIcon = (color: string) => {
+  return new L.Icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41]
+  });
+};
+
+const locationColors: { [key: string]: string } = {
+  'Ithaca': 'red',
+  'Ohio': 'blue',
+  'Maryland': 'green',
+};
+
 const Map = () => {
   // Hardcoded colleges data - matches CollegeContainer
   const colleges: College[] = [
@@ -78,10 +96,11 @@ const Map = () => {
         />
         {colleges.map((college) => {
           const position = locationCoordinates[college.location];
+          const color = locationColors[college.location] || 'blue';
           if (!position) return null;
           
           return (
-            <Marker key={college.id} position={position}>
+            <Marker key={college.id} position={position} icon={createColoredIcon(color)}>
               <Popup>
                 <strong>{college.collegeName}</strong><br />
                 Location: {college.location}<br />
