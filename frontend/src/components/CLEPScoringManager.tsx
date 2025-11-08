@@ -13,7 +13,6 @@ import {
   Button,
   IconButton,
   Alert,
-  Chip,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -258,16 +257,16 @@ const CLEPScoringManager: React.FC<CLEPScoringManagerProps> = ({ institutionId }
         </Box>
       )}
 
-      <Box sx={{ mt: 3, p: 2, bgcolor: 'rgba(255, 203, 5, 0.1)', borderRadius: 1 }}>
-        <Typography variant="body2" sx={{ color: 'rgba(255, 203, 5, 1)' }} gutterBottom>
+      <Box sx={{ mt: 3, p: 2, bgcolor: 'white', borderRadius: 1, border: '1px solid #e0e0e0' }}>
+        <Typography variant="body2" sx={{ color: 'black' }} gutterBottom>
           <strong>Note:</strong> You can set different threshold scores for different credit amounts. 
           For example, you can add multiple entries for the same exam:
         </Typography>
-        <Box component="ul" sx={{ pl: 3, mt: 1, mb: 0, color: 'rgba(255, 203, 5, 1)' }}>
+        <Box component="ul" sx={{ pl: 3, mt: 1, mb: 0, color: 'black' }}>
           <li>Physics - Score 65 = 3 credits (lecture only)</li>
           <li>Physics - Score 70 = 4 credits (lecture + lab)</li>
         </Box>
-        <Typography variant="body2" sx={{ mt: 1, color: 'rgba(255, 203, 5, 1)' }}>
+        <Typography variant="body2" sx={{ mt: 1, color: 'black' }}>
           Simply add multiple rows with the same exam name but different threshold scores and credit amounts.
         </Typography>
       </Box>
