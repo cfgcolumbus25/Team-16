@@ -18,6 +18,7 @@ import {
 } from '@mui/material';
 import CLEPScoringManager from './CLEPScoringManager';
 import Login from './login';
+import { useThemeMode } from '../contexts/ThemeContext';
 
 interface Institution {
   id: number;
@@ -25,6 +26,8 @@ interface Institution {
 }
 
 const UniversityDashboard: React.FC = () => {
+  const { mode } = useThemeMode();
+  const isDark = mode === 'dark';
   const [selectedInstitution, setSelectedInstitution] = useState<number | ''>('');
   const [institutions, setInstitutions] = useState<Institution[]>([]);
   const [showRequestForm, setShowRequestForm] = useState(false);
@@ -108,13 +111,14 @@ const UniversityDashboard: React.FC = () => {
       <Box
         sx={{
           minHeight: '100vh',
-          backgroundColor: 'rgba(255, 203, 5, 0.15)',
+          backgroundColor: isDark ? 'transparent' : 'rgba(255, 203, 5, 0.15)',
           pt: 4,
           pb: 4,
+          transition: 'background-color 0.3s ease',
         }}
       >
         <Container maxWidth="lg">
-          <Typography>Loading...</Typography>
+          <Typography sx={{ color: isDark ? '#e8f0f8' : 'inherit' }}>Loading...</Typography>
         </Container>
       </Box>
     );
@@ -124,9 +128,10 @@ const UniversityDashboard: React.FC = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        backgroundColor: 'rgba(255, 203, 5, 0.15)',
+        backgroundColor: isDark ? 'transparent' : 'rgba(255, 203, 5, 0.15)',
         pt: 4,
         pb: 4,
+        transition: 'background-color 0.3s ease',
       }}
     >
       <Container maxWidth="lg">
@@ -136,13 +141,44 @@ const UniversityDashboard: React.FC = () => {
         </Alert>
       )}
 
-      <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
-        <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'rgba(255, 203, 5, 1)' }}>
+      <Paper 
+        elevation={3} 
+        sx={{ 
+          p: 4, 
+          mb: 4,
+          background: isDark
+            ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+            : 'white',
+          border: isDark
+            ? '1px solid rgba(168, 208, 240, 0.3)'
+            : 'none',
+          transition: 'background 0.3s ease, border 0.3s ease',
+        }}
+      >
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          gutterBottom 
+          sx={{ 
+            color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+            transition: 'color 0.3s ease',
+          }}
+        >
           Which institution are you?
         </Typography>
         
         <FormControl fullWidth sx={{ mt: 3 }}>
-          <InputLabel id="institution-select-label">Select Your Institution</InputLabel>
+          <InputLabel 
+            id="institution-select-label"
+            sx={{
+              color: isDark ? '#a8d0f0' : 'inherit',
+              '&.Mui-focused': {
+                color: isDark ? '#e8f0f8' : 'inherit',
+              },
+            }}
+          >
+            Select Your Institution
+          </InputLabel>
           <Select
             labelId="institution-select-label"
             id="institution-select"
@@ -150,13 +186,47 @@ const UniversityDashboard: React.FC = () => {
             label="Select Your Institution"
             onChange={handleInstitutionChange}
             disabled={isLoggedIn}
+            sx={{
+              color: isDark ? '#e8f0f8' : 'inherit',
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+              },
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: isDark ? '#a8d0f0' : 'inherit',
+              },
+              '& .MuiSvgIcon-root': {
+                color: isDark ? '#a8d0f0' : 'inherit',
+              },
+            }}
           >
             {institutions.map((inst) => (
-              <MenuItem key={inst.id} value={inst.id}>
+              <MenuItem 
+                key={inst.id} 
+                value={inst.id}
+                sx={{
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'inherit',
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '&:hover': {
+                    backgroundColor: isDark ? 'rgba(168, 208, 240, 0.2)' : 'inherit',
+                  },
+                }}
+              >
                 {inst.name}
               </MenuItem>
             ))}
-            <MenuItem value="request-new">
+            <MenuItem 
+              value="request-new"
+              sx={{
+                backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'inherit',
+                color: isDark ? '#a8d0f0' : 'inherit',
+                '&:hover': {
+                  backgroundColor: isDark ? 'rgba(168, 208, 240, 0.2)' : 'inherit',
+                },
+              }}
+            >
               <em>My institution is not listed - Fill out this form</em>
             </MenuItem>
           </Select>
@@ -164,7 +234,20 @@ const UniversityDashboard: React.FC = () => {
       </Paper>
 
       {selectedInstitution && !isLoggedIn && (
-        <Paper elevation={3} sx={{ p: 4, mb: 4 }}>
+        <Paper 
+          elevation={3} 
+          sx={{ 
+            p: 4, 
+            mb: 4,
+            background: isDark
+              ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+              : 'white',
+            border: isDark
+              ? '1px solid rgba(168, 208, 240, 0.3)'
+              : 'none',
+            transition: 'background 0.3s ease, border 0.3s ease',
+          }}
+        >
           <Login userType="University" onLoginSuccess={handleLoginSuccess} />
         </Paper>
       )}
@@ -174,9 +257,26 @@ const UniversityDashboard: React.FC = () => {
       )}
 
       {/* Request New Institution Dialog */}
-      <Dialog open={showRequestForm} onClose={() => setShowRequestForm(false)} maxWidth="sm" fullWidth>
+      <Dialog 
+        open={showRequestForm} 
+        onClose={() => setShowRequestForm(false)} 
+        maxWidth="sm" 
+        fullWidth
+        PaperProps={{
+          sx: {
+            background: isDark
+              ? 'linear-gradient(135deg, rgba(30, 58, 95, 0.95) 0%, rgba(15, 31, 53, 0.95) 100%)'
+              : 'white',
+            border: isDark
+              ? '1px solid rgba(168, 208, 240, 0.3)'
+              : 'none',
+          },
+        }}
+      >
         <form onSubmit={handleRequestSubmit}>
-          <DialogTitle>Request New Institution</DialogTitle>
+          <DialogTitle sx={{ color: isDark ? '#e8f0f8' : 'inherit' }}>
+            Request New Institution
+          </DialogTitle>
           <DialogContent>
             <TextField
               fullWidth
@@ -185,6 +285,29 @@ const UniversityDashboard: React.FC = () => {
               onChange={(e) => setRequestFormData({ ...requestFormData, institutionName: e.target.value })}
               margin="normal"
               required
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -193,6 +316,29 @@ const UniversityDashboard: React.FC = () => {
               onChange={(e) => setRequestFormData({ ...requestFormData, location: e.target.value })}
               margin="normal"
               required
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -201,6 +347,29 @@ const UniversityDashboard: React.FC = () => {
               onChange={(e) => setRequestFormData({ ...requestFormData, contactName: e.target.value })}
               margin="normal"
               required
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -210,6 +379,29 @@ const UniversityDashboard: React.FC = () => {
               onChange={(e) => setRequestFormData({ ...requestFormData, contactEmail: e.target.value })}
               margin="normal"
               required
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
             <TextField
               fullWidth
@@ -220,19 +412,54 @@ const UniversityDashboard: React.FC = () => {
               onChange={(e) => setRequestFormData({ ...requestFormData, reason: e.target.value })}
               margin="normal"
               required
+              sx={{
+                '& .MuiInputLabel-root': {
+                  color: isDark ? '#a8d0f0' : 'inherit',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: isDark ? '#e8f0f8' : 'rgba(255, 203, 5, 1)',
+                },
+                '& .MuiOutlinedInput-root': {
+                  color: isDark ? '#e8f0f8' : 'inherit',
+                  '& fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'inherit',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'inherit',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: isDark ? '#a8d0f0' : 'rgba(255, 203, 5, 1)',
+                  },
+                },
+                '& .MuiInputBase-input': {
+                  backgroundColor: isDark ? 'rgba(15, 31, 53, 0.5)' : 'transparent',
+                },
+              }}
             />
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setShowRequestForm(false)}>Cancel</Button>
+            <Button 
+              onClick={() => setShowRequestForm(false)}
+              sx={{
+                color: isDark ? '#a8d0f0' : 'inherit',
+                '&:hover': {
+                  backgroundColor: isDark ? 'rgba(168, 208, 240, 0.2)' : 'inherit',
+                },
+              }}
+            >
+              Cancel
+            </Button>
             <Button 
               type="submit" 
               variant="contained"
               sx={{
-                backgroundColor: 'rgba(255, 203, 5, 1)',
-                color: '#000',
+                backgroundColor: isDark ? 'rgba(168, 208, 240, 0.3)' : 'rgba(255, 203, 5, 1)',
+                color: isDark ? '#e8f0f8' : '#000',
+                border: isDark ? '1px solid rgba(168, 208, 240, 0.5)' : 'none',
                 '&:hover': {
-                  backgroundColor: 'rgba(255, 203, 5, 0.9)',
+                  backgroundColor: isDark ? 'rgba(168, 208, 240, 0.5)' : 'rgba(255, 203, 5, 0.9)',
                 },
+                transition: 'background-color 0.3s ease, border 0.3s ease',
               }}
             >
               Submit Request
