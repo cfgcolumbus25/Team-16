@@ -6,7 +6,7 @@ CREATE TABLE Institutions (
     acceptance_rate VARCHAR(10) NOT NULL
 );
 
-CREATE TABLE Clep_Exam (
+CREATE TABLE Clep_Exams (
     clep_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     clep_exam_name TEXT NOT NULL
 );

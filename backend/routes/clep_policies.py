@@ -74,7 +74,6 @@ def get_clep_policies_filtered():
     state = user_location.split(", ")[1]
 
     try:
-        # Step 1: Get universities
         if in_state:
             universities = supabase.table("institutions").select("*").eq("state", state).execute().data
         else:
@@ -83,7 +82,6 @@ def get_clep_policies_filtered():
         if not universities:
             return jsonify({"message": "No universities found"}), 404
 
-        # Step 2: Get CLEP policy data
         clep_records = supabase.table("clep_policies").select("*").execute().data
         clep_exams = supabase.table("clep_exams").select("*").execute().data
 
@@ -92,7 +90,6 @@ def get_clep_policies_filtered():
 
         matched_policies = []
 
-        # Step 3: Match CLEP exams and filter by score
         for uni in universities:
             uni_id = uni["uni_id"]
             uni_name = uni["name"]
