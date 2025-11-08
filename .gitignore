@@ -1,1 +1,3 @@
 backend/project_env
+backend/routes/__pycache__
+.env
