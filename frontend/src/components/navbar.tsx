@@ -140,7 +140,7 @@ import {
                     Learners
                   </MenuItem>
                   <MenuItem onClick={() => handleUserTypeSelect('University')}>
-                    University
+                    Institution
                   </MenuItem>
                   <MenuItem onClick={() => handleUserTypeSelect('Admin')}>
                     Admin
@@ -240,7 +240,7 @@ import {
                     Learners
                   </MenuItem>
                   <MenuItem onClick={() => handleUserTypeSelect('University')}>
-                    University
+                    Institution
                   </MenuItem>
                   <MenuItem onClick={() => handleUserTypeSelect('Admin')}>
                     Admin
