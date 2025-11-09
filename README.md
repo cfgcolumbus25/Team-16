@@ -1,4 +1,4 @@
-# CLEP Acceptance Dashboard
+# CLEP Acceptance Dashboard 📝✨
 
 > **🏆 JPMC Code for Good Hackathon 2025** | **📍 Columbus, Ohio**  
 > **Built for Modern States Education Alliance**
