@@ -3,7 +3,7 @@
 > **🏆 JPMC Code for Good Hackathon 2025** | **📍 Columbus, Ohio**  
 > **Built for Modern States Education Alliance**
 
-**Demo Video**: [Pathfindr_demo.mov](https://buckeyemailosu-my.sharepoint.com/:v:/g/personal/kamath_62_buckeyemail_osu_edu/EZrKw-jAe6xFhopfud6oLbYBHKZyh41nZmX4ryD3OVS_Jw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=5hSkyZ)
+**[Demo Video](https://buckeyemailosu-my.sharepoint.com/:v:/g/personal/kamath_62_buckeyemail_osu_edu/EZrKw-jAe6xFhopfud6oLbYBHKZyh41nZmX4ryD3OVS_Jw?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJPbmVEcml2ZUZvckJ1c2luZXNzIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXciLCJyZWZlcnJhbFZpZXciOiJNeUZpbGVzTGlua0NvcHkifX0&e=5hSkyZ)**
 
 A comprehensive, full-stack web application that empowers students to discover colleges accepting CLEP credits based on their exam scores and location preferences. Developed during the JPMC Code for Good hackathon in Columbus, Ohio to address the critical challenge of CLEP credit policy transparency in higher education.
 
@@ -15,7 +15,7 @@ Built by **Team 16** at the **JPMC Code for Good Hackathon 2025** in **Columbus,
 
 Members: [**Haruto Suzuki**](https://www.linkedin.com/in/haruto-s/) • [**Naveen Kamath**](https://www.linkedin.com/in/naveen-kamath-434668287/) • [**Elizabeth Woo**](https://www.linkedin.com/in/elizabethwoo5/) • [**Baseer Sharief**](https://www.linkedin.com/in/baseershariefcs/) • [**Leonardo Medina**](https://www.linkedin.com/in/leomedina254/) • [**Karan Tandra**](https://www.linkedin.com/in/karan-tandra/) • [**Aakash Kalmady**](https://www.linkedin.com/in/aakashkalmady/)
 
-Mentors: Mr. Ahmir Robinson • Ms. Lydiasheen Rhymond
+Mentors: Mr. Ahmir Robinson • Ms. Lydiasheen Rhymond • Mr. Parshva Shah
 
 
 ---
