@@ -11,7 +11,7 @@ A comprehensive, full-stack web application that empowers students to discover c
 
 Built by **Team 16** at the **JPMC Code for Good Hackathon 2025** in **Columbus, Ohio**
 
-Members: [**Haruto Suzuki**]([https://www.linkedin.com/in/haruto-s/]) • [**Naveen Kamath**]([https://www.linkedin.com/in/naveen-kamath-434668287/]) • [**Elizabeth Woo**]([https://www.linkedin.com/in/elizabethwoo5/]) • [**Baseer Sharief**]([https://www.linkedin.com/in/baseershariefcs/]) • [**Leonardo Medina**]([https://www.linkedin.com/in/leomedina254/]) • [**Karan Tandra**]([https://www.linkedin.com/in/karan-tandra/]) • [**Aakash Kalmady**]([https://www.linkedin.com/in/aakashkalmady/])
+Members: [**Haruto Suzuki**](https://www.linkedin.com/in/haruto-s/) • [**Naveen Kamath**](https://www.linkedin.com/in/naveen-kamath-434668287/) • [**Elizabeth Woo**](https://www.linkedin.com/in/elizabethwoo5/) • [**Baseer Sharief**](https://www.linkedin.com/in/baseershariefcs/) • [**Leonardo Medina**](https://www.linkedin.com/in/leomedina254/) • [**Karan Tandra**](https://www.linkedin.com/in/karan-tandra/) • [**Aakash Kalmady**](https://www.linkedin.com/in/aakashkalmady/)
 
 Mentors: Mr. Ahmir Robinson • Ms. Lydiasheen Rhymond
 
